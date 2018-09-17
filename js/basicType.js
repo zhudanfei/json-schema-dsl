@@ -1,4 +1,4 @@
-let common = require('./schema-dsl-common');
+const common = require('./schema-dsl-common');
 
 function anyType(value, path){
     return value;
@@ -60,8 +60,11 @@ function stringMap(value, path){
     return value;
 }
 
-JsonAny = anyType;
-JsonString = stringType;
-JsonInteger = integerType;
-JsonBoolean = booleanType;
-JsonStringMap = stringMap;
+module.exports = {
+    anyType: anyType,
+    stringType: stringType,
+    integerType: integerType,
+    booleanType: booleanType,
+    stringMap: stringMap
+};
+
