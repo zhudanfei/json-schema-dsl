@@ -42,7 +42,7 @@ function checkObjectType(inputObject, path) {
 
 function getFieldResult(inputObject, path, result) {
     return function (field) {
-        let fieldName = field.getName();
+        const fieldName = field.getName();
         if (fieldName in inputObject) {
             result[fieldName] = field.process(path, inputObject[fieldName]);
         } else {

@@ -8,10 +8,14 @@ JsonString = basicType.stringType;
 JsonInteger = basicType.integerType;
 JsonBoolean = basicType.booleanType;
 JsonStringMap = basicType.stringMap;
-JsonField = function (name, fieldType, ...filters){
-    return new jsonField.Field(name, fieldType, filters);
+JsonFieldIn = function (name, fieldType, ...filters){
+    return new jsonField.IncomingField(name, fieldType, filters);
 };
 
-JsonIncomingObject = jsonObject.incomingObject;
-JsonOutgoingObject = jsonObject.outgoingObject;
+JsonFieldOut = function (name, fieldType, ...filters){
+    return new jsonField.OutgoingField(name, fieldType, filters);
+};
+
+JsonObjectIn = jsonObject.incomingObject;
+JsonObjectOut = jsonObject.outgoingObject;
 JsonArray = jsonArray.arrayClass;

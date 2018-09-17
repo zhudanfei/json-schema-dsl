@@ -2,18 +2,23 @@ const assert = require('chai').assert;
 const expect = require('chai').expect;
 
 require('../jsonSchemaDSL');
-require('../filters');
+const filters = require('../filters');
+
+const MaxLength = filters.maxLength;
+const MinLength = filters.minLength;
+const Range = filters.range;
+const NotNull = filters.notNull;
 
 const ROOT = ['root'];
 
-const schema1 = JsonIncomingObject(
-    JsonField('node', JsonString, MaxLength(6)),
-    JsonField('user', JsonArray(JsonString, MaxLength(6))),
-    JsonField('tag', JsonIncomingObject(JsonField('name', JsonString, MaxLength(4)),
-        JsonField('level', JsonInteger, Range(0, 3))
+const schema1 = JsonObjectIn(
+    JsonFieldIn('node', JsonString, MaxLength(6)),
+    JsonFieldIn('user', JsonArray(JsonString, MaxLength(6))),
+    JsonFieldIn('tag', JsonObjectIn(JsonFieldIn('name', JsonString, MaxLength(4)),
+        JsonFieldIn('level', JsonInteger, Range(0, 3))
     )),
-    JsonField('event', JsonArray(JsonIncomingObject(JsonField('name', JsonString, MaxLength(3)),
-        JsonField('alarm', JsonBoolean)
+    JsonFieldIn('event', JsonArray(JsonObjectIn(JsonFieldIn('name', JsonString, MaxLength(3)),
+        JsonFieldIn('alarm', JsonBoolean)
     )))
 );
 
@@ -27,7 +32,7 @@ describe('Incoming Schema 1', function(){
         const data = {user:['abc', 'def', 'xxxxxx']};
         const expected = {node:null, user:['abc', 'def', 'xxxxxx'], tag:null, event:null};
         const actual = schema1(data);
-        assert.deepEqual(expected, actual);
+        assert.deepEqual(actual, expected);
     });
 
     it('Should throw error when the type of an element in array is not correct', function() {
@@ -49,7 +54,7 @@ describe('Incoming Schema 1', function(){
         const data =  {tag: {name: 'abc'}};
         const expected = {node:null, user:null, tag:{name: 'abc', level:null}, event:null};
         const actual = schema1(data);
-        assert.deepEqual(expected, actual);
+        assert.deepEqual(actual, expected);
     });
 
     it('Should throw error when the length of an element exceed the limit', function() {
@@ -61,16 +66,16 @@ describe('Incoming Schema 1', function(){
         const data =  {event: [{name: 'abc'}, {alarm: false}]};
         const expected = {node:null, user:null, tag:null, event:[{name: 'abc', alarm:null}, {name:null, alarm: false}]};
         const actual = schema1(data);
-        assert.deepEqual(expected, actual);
+        assert.deepEqual(actual, expected);
     });
 
 });
 
-const schema2 = JsonIncomingObject(
-    JsonField('node', JsonString, MaxLength(4)),
-    JsonField('user', JsonArray(JsonString, MaxLength(6))),
-    JsonField('tag', JsonIncomingObject(JsonField('name', JsonString, MaxLength(4)),
-        JsonField('level', JsonInteger, Range(0, 3)),
+const schema2 = JsonObjectIn(
+    JsonFieldIn('node', JsonString, MaxLength(4)),
+    JsonFieldIn('user', JsonArray(JsonString, MaxLength(6))),
+    JsonFieldIn('tag', JsonObjectIn(JsonFieldIn('name', JsonString, MaxLength(4)),
+        JsonFieldIn('level', JsonInteger, Range(0, 3)),
     )),
 );
 
@@ -79,20 +84,20 @@ describe('Incoming Schema 2', function() {
         const data = {node: null, user: null, tag: null};
         const expected = {node: null, user: null, tag: null};
         const actual = schema2(data, ROOT);
-        assert.deepEqual(expected, actual);
+        assert.deepEqual(actual, expected);
     });
 
     it('Should convert null inside object', function () {
         const data = {node: 'abc', user: ['def', null, 'f'], tag: {name: null, level: 2}};
         const expected = {node: 'abc', user: ['def', null, 'f'], tag: {name: null, level: 2}};
         const actual = schema2(data);
-        assert.deepEqual(expected, actual);
+        assert.deepEqual(actual, expected);
     });
 
 });
 
-const schema3 = JsonIncomingObject(
-    JsonField('node', JsonString, NotNull, MaxLength(4)),
+const schema3 = JsonObjectIn(
+    JsonFieldIn('node', JsonString, NotNull, MaxLength(4)),
 );
 
 describe('Incoming Schema 3', function() {
@@ -113,8 +118,8 @@ describe('Incoming Schema 3', function() {
 
 });
 
-const schema4 = JsonArray(JsonIncomingObject(
-    JsonField('arrayOfObject', JsonString, NotNull, MaxLength(4)),
+const schema4 = JsonArray(JsonObjectIn(
+    JsonFieldIn('arrayOfObject', JsonString, NotNull, MaxLength(4)),
 ));
 
 describe('Incoming Schema 4', function() {
@@ -125,9 +130,9 @@ describe('Incoming Schema 4', function() {
 
 });
 
-const schema5 = JsonIncomingObject(
-    JsonField('node', JsonString),
-    JsonField('event_id', JsonArray(JsonInteger), NotNull),
+const schema5 = JsonObjectIn(
+    JsonFieldIn('node', JsonString),
+    JsonFieldIn('event_id', JsonArray(JsonInteger), NotNull),
 );
 
 describe('Incoming Schema 5', function() {
@@ -138,9 +143,9 @@ describe('Incoming Schema 5', function() {
 
 });
 
-const schema6 = JsonIncomingObject(
-    JsonField('name', JsonString),
-    JsonField('spec', JsonStringMap, NotNull),
+const schema6 = JsonObjectIn(
+    JsonFieldIn('name', JsonString),
+    JsonFieldIn('spec', JsonStringMap, NotNull),
 );
 
 describe('Incoming Schema 6', function() {
@@ -158,7 +163,7 @@ describe('Incoming Schema 6', function() {
         const data = {name:'abc', spec:{def:'1', size:'xyz'}};
         const expected = {name:'abc', spec:{def:'1', size:'xyz'}};
         const actual = schema6(data, ROOT);
-        assert.deepEqual(expected, actual);
+        assert.deepEqual(actual, expected);
     });
 });
 

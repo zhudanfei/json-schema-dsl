@@ -1,4 +1,4 @@
-let common = require('./schema-dsl-common');
+const common = require('./schema-dsl-common');
 
 function toDate(value, path){
     if (value === null){
@@ -100,15 +100,18 @@ function range(low, high){
     }
 }
 
-function putIntoGlobal() {
-    this.ToTimestamp = toTimestamp;
-    this.NotNull = notNull;
-    this.Trim = trim;
-    this.MaxLength = maxLength;
-    this.MinLength = minLength;
-    this.LengthRange = lengthRange;
-    this.Only = only;
-    this.Range = range;
+function integerToString(i){
+    return i.toString();
 }
 
-putIntoGlobal();
+module.exports = {
+    toTimestamp: toTimestamp,
+    notNull: notNull,
+    trim: trim,
+    maxLength: maxLength,
+    minLength: minLength,
+    lengthRange: lengthRange,
+    only: only,
+    range: range,
+    integerToString: integerToString
+};
