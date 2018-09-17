@@ -1,5 +1,9 @@
 let common = require('./schema-dsl-common');
 
+function anyType(value, path){
+    return value;
+}
+
 function stringType(value, path){
     path = path || [];
     if (value === null) {
@@ -56,11 +60,8 @@ function stringMap(value, path){
     return value;
 }
 
-function putIntoGlobal() {
-    this.JsonString = {convert: stringType};
-    this.JsonInteger = {convert: integerType};
-    this.JsonBoolean = {convert: booleanType};
-    this.StringMap = {convert: stringMap};
-}
-
-putIntoGlobal();
+JsonAny = anyType;
+JsonString = stringType;
+JsonInteger = integerType;
+JsonBoolean = booleanType;
+JsonStringMap = stringMap;
