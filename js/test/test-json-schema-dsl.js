@@ -4,13 +4,13 @@ const expect = require('chai').expect;
 require('../json-schema-dsl');
 require('../filters');
 
-let schema1 = JsonObject(
+let schema1 = JsonIncomingObject(
     JsonField('node', JsonString, MaxLength(6)),
     JsonField('user', JsonArray(JsonString, MaxLength(6))),
-    JsonField('tag', JsonObject(JsonField('name', JsonString, MaxLength(4)),
+    JsonField('tag', JsonIncomingObject(JsonField('name', JsonString, MaxLength(4)),
         JsonField('level', JsonInteger, Range(0, 3))
     )),
-    JsonField('event', JsonArray(JsonObject(JsonField('name', JsonString, MaxLength(3)),
+    JsonField('event', JsonArray(JsonIncomingObject(JsonField('name', JsonString, MaxLength(3)),
         JsonField('alarm', JsonBoolean)
     )))
 );
@@ -64,10 +64,10 @@ describe('Schema 1', function(){
 
 });
 
-let schema2 = JsonObject(
+let schema2 = JsonIncomingObject(
     JsonField('node', JsonString, MaxLength(4)),
     JsonField('user', JsonArray(JsonString, MaxLength(6))),
-    JsonField('tag', JsonObject(JsonField('name', JsonString, MaxLength(4)),
+    JsonField('tag', JsonIncomingObject(JsonField('name', JsonString, MaxLength(4)),
         JsonField('level', JsonInteger, Range(0, 3)),
     )),
 );
@@ -91,7 +91,7 @@ describe('Schema 2', function() {
 
 });
 
-let schema3 = JsonObject(
+let schema3 = JsonIncomingObject(
     JsonField('node', JsonString, NotNull, MaxLength(4)),
 );
 
@@ -113,7 +113,7 @@ describe('Schema 3', function() {
 
 });
 
-let schema4 = JsonArray(JsonObject(
+let schema4 = JsonArray(JsonIncomingObject(
     JsonField('arrayOfObject', JsonString, NotNull, MaxLength(4)),
 ));
 
@@ -125,7 +125,7 @@ describe('Schema 4', function() {
 
 });
 
-let schema5 = JsonObject(
+let schema5 = JsonIncomingObject(
     JsonField('node', JsonString),
     JsonField('event_id', JsonArray(JsonInteger), NotNull),
 );
@@ -138,7 +138,7 @@ describe('Schema 5', function() {
 
 });
 
-let schema6 = JsonObject(
+let schema6 = JsonIncomingObject(
     JsonField('name', JsonString),
     JsonField('spec', JsonStringMap, NotNull),
 );
