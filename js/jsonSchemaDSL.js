@@ -1,21 +1,14 @@
-const basicType = require('./basicType');
-const jsonField = require('./jsonField');
-const jsonArray = require('./jsonArray');
-const jsonObject = require('./jsonObject');
-
-JsonAny = basicType.anyType;
-JsonString = basicType.stringType;
-JsonInteger = basicType.integerType;
-JsonBoolean = basicType.booleanType;
-JsonStringMap = basicType.stringMap;
-JsonFieldIn = function (name, fieldType, ...filters){
-    return new jsonField.IncomingField(name, fieldType, filters);
+JsonAny = {type: 'Any'};
+JsonString = {type: 'String'};
+JsonInteger = {type: 'Integer'};
+JsonBoolean = {type: 'Boolean'};
+JsonStringMap = {type: 'StringMap'};
+JsonField = function (name, fieldType, ...filters){
+    return {name: name, fieldType: fieldType, filters: filters};
 };
-
-JsonFieldOut = function (name, fieldType, ...filters){
-    return new jsonField.OutgoingField(name, fieldType, filters);
+JsonObject = function(...fields){
+    return {type: 'Object', fields: fields};
 };
-
-JsonObjectIn = jsonObject.incomingObject;
-JsonObjectOut = jsonObject.outgoingObject;
-JsonArray = jsonArray.arrayClass;
+JsonArray = function(elementType, ...filters){
+    return {type: 'Array', elementType: elementType, filters: filters};
+};

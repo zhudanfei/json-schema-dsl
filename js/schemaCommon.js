@@ -1,25 +1,25 @@
-exports.isString = function (value){
+ function isString(value){
     return typeof(value) === 'string';
-};
+}
 
-exports.isInteger = function (value){
+function isInteger(value){
     return Number.isInteger(value);
-};
+}
 
-exports.isBoolean = function (value){
+function isBoolean(value){
     return typeof(value) === 'boolean';
-};
+}
 
-exports.isDict = function (value){
+function isDict(value){
     if (Array.isArray(value)){
         return false;
     }
     return typeof(value) === 'object';
-};
+}
 
-exports.isList = function (value){
+ function isList(value){
     return Array.isArray(value);
-};
+}
 
 function getPathString(path){
     if (path === null){
@@ -28,7 +28,15 @@ function getPathString(path){
     return path.join('.');
 }
 
-exports.getMessage = function (path, msg){
+ function getMessage(path, msg){
     return getPathString(path) + ':' + msg;
-};
+}
 
+module.exports = {
+    isString: isString,
+    isInteger: isInteger,
+    isBoolean: isBoolean,
+    isDict: isDict,
+    isList: isList,
+    getMessage: getMessage
+};

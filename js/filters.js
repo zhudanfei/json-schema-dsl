@@ -1,4 +1,4 @@
-const common = require('./schema-dsl-common');
+const common = require('./schemaCommon');
 
 function toDate(value, path){
     if (value === null){
