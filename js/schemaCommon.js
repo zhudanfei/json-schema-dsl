@@ -29,6 +29,9 @@ function getPathString(path){
 }
 
  function getMessage(path, msg){
+    if (path.length === 0){
+        return msg;
+    }
     return getPathString(path) + ':' + msg;
 }
 

@@ -46,7 +46,7 @@ describe('JSON Integer Type', function(){
         assert.throws(() => basicType.integerType(3.4, ['3']), Error, "3:Should be an integer")
     });
     it('Integer should throw error if input is a boolean', function(){
-        assert.throws(() => basicType.integerType(true, null), Error, ":Should be an integer")
+        assert.throws(() => basicType.integerType(true, null), Error, "Should be an integer")
     });
     it('Integer should throw error if input is an object', function(){
         const obj = {'a':1, 'b':2};
@@ -100,7 +100,7 @@ describe('JSON String Map', function(){
     });
     it('StringMap should throw error if input is an array', function(){
         const arr = ['abc', 'def'];
-        assert.throws(() => basicType.stringMap(arr, []), Error, ":Should be an object")
+        assert.throws(() => basicType.stringMap(arr, []), Error, "Should be an object")
     });
     it('StringMap should throw error if input contains non-strings', function(){
         const arr = {'a':'b', 'd':4};
