@@ -17,14 +17,15 @@ function findField(schemaObject, fieldName){
     return null;
 }
 
-function createProxy(schemaObject, path = []){
-    return new Proxy(function(obj){}, new SchemaProxy(schemaObject, path));
+function createProxy(schemaObject, path = [], hasUndefined = false){
+    return new Proxy(function(obj){}, new SchemaProxy(schemaObject, path, hasUndefined));
 }
 
 class SchemaProxy {
-    constructor(schemaObject, path){
+    constructor(schemaObject, path, hasUndefined){
         this.$schemaObject = schemaObject;
         this.$path = path;
+        this.$hasUndefined = hasUndefined;
     }
 
     getObjectFieldValue(target, field){
@@ -65,12 +66,16 @@ class SchemaProxy {
         }
         const field = findField(this.$schemaObject, fieldName);
         if (field === null){
-            return obj => undefined;
+            const newPath = this.$path.concat([fieldName]);
+            return createProxy({fields:[]}, newPath, true);
         }
         return this.getFieldValue(target, field);
     }
 
     apply(target, thisArg, argumentsList){
+        if (this.$hasUndefined){
+            return undefined;
+        }
         return getter(argumentsList[0], this.$path);
     }
 }

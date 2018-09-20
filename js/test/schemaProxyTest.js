@@ -60,6 +60,12 @@ describe('Schema 1 proxy', function() {
         assert.isUndefined(actual);
     });
 
+    it('Should return undefined if the name is not in the schema twice', function () {
+        const data = {tag: {name: 'abc', level: 10}};
+        const actual = proxy.nod.node(data);
+        assert.isUndefined(actual);
+    });
+
     it('Should return null if the value is missing schema second level', function () {
         const data = {tag: {name: 'abc'}};
         const actual = proxy.tag.level(data);
