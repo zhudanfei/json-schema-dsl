@@ -69,6 +69,41 @@ function getter(schemaObj, path, obj){
     }
 }
 
+function setter(schemaObj, path, obj, value){
+    if (path.length === 0){
+        throw new Error('Cannot set itself');
+    }
+    for (let i = 0; i < path.length - 1; i++){
+        const name = path[i];
+        const field = findField(schemaObj, name);
+        if (field === null){
+            throw new Error('Unrecognized field: ' + name);
+        }
+        if (field.fieldType.type !== 'Object' && field.fieldType.type !== 'Array'){
+            throw new Error('Path is too long');
+        }
+        if (field.fieldType.type === 'Object'){
+            if (obj[name] === undefined || obj[name] === null){
+                obj[name] = {};
+            }
+            schemaObj = field.fieldType;
+            obj = obj[name];
+        } else {
+            if (obj[name] === undefined || obj[name] === null){
+                obj[name] = [];
+            }
+            schemaObj = field.fieldType;
+            obj = obj[name];
+        }
+    }
+    const name = path[path.length - 1];
+    const field = findField(schemaObj, name);
+    if (field === null){
+        throw new Error('Unrecognized field: ' + name);
+    }
+    obj[name] = value;
+}
+
 function createProxy(target, schemaObject, path = []){
     return new Proxy(target, new SchemaProxy(schemaObject, path));
 }
@@ -80,14 +115,18 @@ class SchemaProxy {
     }
 
     get(target, fieldName, receiver){
-        if (fieldName === '$get'){
-            return this.$get(target);
+        if (fieldName === '$get' || fieldName === '$set'){
+            return this[fieldName](target);
         }
         return createProxy(target, this.$schemaObject, this.$path.concat([fieldName]));
     }
 
     $get(target){
         return () => getter(this.$schemaObject, this.$path, target);
+    }
+
+    $set(target){
+        return value => setter(this.$schemaObject, this.$path, target, value);
     }
 }
 

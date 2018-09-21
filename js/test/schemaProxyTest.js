@@ -25,7 +25,7 @@ const schema1 = JsonObject(
     JsonField('spec', JsonStringMap),
 );
 
-describe('Schema 1 proxy', function () {
+describe('Schema 1 proxy getter', function () {
     it('Should return value in the first level', function () {
         const data = {node: '5'};
         const proxy = schemaProxy.createProxy(data, schema1);
@@ -42,7 +42,7 @@ describe('Schema 1 proxy', function () {
         assert.deepEqual(actual, expected);
     });
 
-    it('Should return undefined if the name is not in the schema first level', function () {
+    it('Should throw error if the name is not in the schema first level', function () {
         const data = {node: '5'};
         const proxy = schemaProxy.createProxy(data, schema1);
         assert.throws(() => proxy.nod.$get(), Error, "Unrecognized field: nod");
@@ -70,19 +70,19 @@ describe('Schema 1 proxy', function () {
         assert.equal(actual, expected);
     });
 
-    it('Should throw error if there is no second level', function () {
+    it('Should throw error if path is too long', function () {
         const data = {node: '5', tag: {name: 'abc', level: 10}};
         const proxy = schemaProxy.createProxy(data, schema1);
         assert.throws(() => proxy.tag.level.x.$get(), Error, "Path is too long");
     });
 
-    it('Should return undefined if the name is not in the schema second level', function () {
+    it('Should throw error if the name is not in the schema second level', function () {
         const data = {tag: {name: 'abc', level: 10}};
         const proxy = schemaProxy.createProxy(data, schema1);
         assert.throws(() => proxy.tag.node.$get(), Error, "Unrecognized field: node");
     });
 
-    it('Should return undefined if the name is not in the schema twice', function () {
+    it('Should throw error if the name is not in the schema twice', function () {
         const data = {tag: {name: 'abc', level: 10}};
         const proxy = schemaProxy.createProxy(data, schema1);
         assert.throws(() => proxy.nod.node.$get(), Error, "Unrecognized field: nod");
@@ -97,13 +97,6 @@ describe('Schema 1 proxy', function () {
 
     it('Should return null if the object is missing schema second level', function () {
         const data = {node: '5'};
-        const proxy = schemaProxy.createProxy(data, schema1);
-        const actual = proxy.tag.cascade.$get();
-        assert.isNull(actual);
-    });
-
-    it('Should return null if the object is missing schema second level', function () {
-        const data = {tag: {name: 'abc'}};
         const proxy = schemaProxy.createProxy(data, schema1);
         const actual = proxy.tag.cascade.$get();
         assert.isNull(actual);
@@ -139,13 +132,13 @@ describe('Schema 1 proxy', function () {
         assert.isUndefined(actual);
     });
 
-    it('Should return undefined if path is longer', function () {
+    it('Should throw error if path is longer', function () {
         const data = {node: '5', event: [{name: 'abc'}, {name: 'xyz'}]};
         const proxy = schemaProxy.createProxy(data, schema1);
         assert.throws(() => proxy.event[0].name.abc.$get(), Error, "Path is too long");
     });
 
-    it('Should return undefined if value is missing in the array of object', function () {
+    it('Should throw error if value is missing in the array of object', function () {
         const data = {node: '5', event: [{name: 'abc'}, {name: 'xyz'}]};
         const proxy = schemaProxy.createProxy(data, schema1);
         assert.throws(() => proxy.event[0].nam.$get(), Error, "Unrecognized field: nam");
@@ -161,3 +154,75 @@ describe('Schema 1 proxy', function () {
 
 });
 
+describe('Schema 1 proxy setter', function () {
+    it('Should throw error if the object itself is set', function () {
+        const data = {};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        assert.throws(() => proxy.$set(), Error, 'Cannot set itself');
+    });
+
+    it('Should set value in the first level', function () {
+        const data = {};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        const expected = {node: '5'};
+        proxy.node.$set('5');
+        assert.deepEqual(data, expected);
+    });
+
+    it('Should set whole object in the first level', function () {
+        const data = {node: '5'};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        const expected = {node: '5', tag: {name: 'abc', level: 10}};
+        proxy.tag.$set({name: 'abc', level: 10});
+        assert.deepEqual(data, expected);
+    });
+
+    it('Should throw error if the name is not in the schema first level', function () {
+        const data = {node: '5'};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        assert.throws(() => proxy.nod.$set(5), Error, "Unrecognized field: nod");
+    });
+
+    it('Should set value in the second level', function () {
+        const data = {node: '5', tag: {name: 'abc', level: 10}};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        const expected = {node: '5', tag: {name: 'abc', level: 7}};
+        proxy.tag.level.$set(7);
+        assert.deepEqual(data, expected);
+    });
+
+    it('Should set value in the second level even it is null', function () {
+        const data = {node: '5'};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        const expected = {node: '5', tag: {level: 7}};
+        proxy.tag.level.$set(7);
+        assert.deepEqual(data, expected);
+    });
+
+    it('Should throw error if path is too long', function () {
+        const data = {node: '5'};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        assert.throws(() => proxy.node.level.$set(7), Error, 'Path is too long');
+    });
+
+    it('Should throw error if the name is not in the schema second level', function () {
+        const data = {};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        assert.throws(() => proxy.tag.node.$set('5'), Error, "Unrecognized field: node");
+    });
+
+    it('Should throw error if the name is not in the schema twice', function () {
+        const data = {};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        assert.throws(() => proxy.nod.node.$set('5'), Error, "Unrecognized field: nod");
+    });
+
+    it('Should set value in the array', function () {
+        const data = {node: '5', user: ['abc', 'xyz']};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        const expected = {node: '5', user: ['abc', 'xyz']};
+        proxy.user[1].$set('abc');
+        assert.equal(data, expected);
+    });
+
+});
