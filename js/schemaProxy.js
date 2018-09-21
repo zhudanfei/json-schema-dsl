@@ -69,42 +69,73 @@ function getter(schemaObj, path, obj){
     }
 }
 
-function setObjectField(schemaObj, obj, value, name){
+function walkFieldCommon(obj, name, fieldType){
+    if (fieldType.type !== 'Object' && fieldType.type !== 'Array'){
+        throw new Error('Path is too long');
+    }
+    if (obj[name] === undefined || obj[name] === null){
+        if (fieldType.type === 'Object'){
+            obj[name] = {};
+        } else {
+            obj[name] = [];
+        }
+    }
+    return [fieldType, obj[name]];
+}
+
+function walkObjectField(schemaObj, obj, name){
     const field = findField(schemaObj, name);
     if (field === null){
         throw new Error('Unrecognized field: ' + name);
     }
-    if (field.fieldType.type !== 'Object' && field.fieldType.type !== 'Array'){
-        throw new Error('Path is too long');
+    const fieldType = field.fieldType;
+    return walkFieldCommon(obj, name, fieldType);
+}
+
+function walkArrayField(schemaObj, obj, name){
+    const index = convertToInteger(name);
+    if (index === null){
+        throw new Error('Index should be integer');
     }
-    if (field.fieldType.type === 'Object'){
-        if (obj[name] === undefined || obj[name] === null){
-            obj[name] = {};
+    const fieldType = schemaObj.elementType;
+    return walkFieldCommon(obj, index, fieldType);
+}
+
+function walkFields(schemaObj, obj, path){
+    for (const name of path){
+        if (schemaObj.type === 'Object'){
+            [schemaObj, obj] = walkObjectField(schemaObj, obj, name);
+        } else if (schemaObj.type === 'Array') {
+            [schemaObj, obj] = walkArrayField(schemaObj, obj, name);
+        } else {
+            throw new Error('Only object & array are supported');
         }
+    }
+    return [schemaObj, obj];
+}
+
+function setField(schemaObj, obj, name, value){
+    if (schemaObj.type === 'Object') {
+        const field = findField(schemaObj, name);
+        if (field === null) {
+            throw new Error('Unrecognized field: ' + name);
+        }
+        obj[name] = value;
     } else {
-        if (obj[name] === undefined || obj[name] === null){
-            obj[name] = [];
+        const index = convertToInteger(name);
+        if (index === null){
+            throw new Error('Index should be integer');
         }
+        obj[index] = value;
     }
-    return [field.fieldType, obj[name]];
 }
 
 function setter(schemaObj, path, obj, value){
     if (path.length === 0){
         throw new Error('Cannot set itself');
     }
-    for (let i = 0; i < path.length - 1; i++){
-        const name = path[i];
-        if (schemaObj.type === 'Object'){
-            [schemaObj, obj] = setObjectField(schemaObj, obj, value, name);
-        }
-    }
-    const name = path[path.length - 1];
-    const field = findField(schemaObj, name);
-    if (field === null){
-        throw new Error('Unrecognized field: ' + name);
-    }
-    obj[name] = value;
+    [schemaObj, obj] = walkFields(schemaObj, obj, path.slice(0, path.length - 1));
+    setField(schemaObj, obj, path[path.length - 1], value);
 }
 
 function createProxy(target, schemaObject, path = []){

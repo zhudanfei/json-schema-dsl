@@ -220,9 +220,9 @@ describe('Schema 1 proxy setter', function () {
     it('Should set value in the array', function () {
         const data = {node: '5', user: ['abc', 'xyz']};
         const proxy = schemaProxy.createProxy(data, schema1);
-        const expected = {node: '5', user: ['abc', 'xyz']};
+        const expected = {node: '5', user: ['abc', 'abc']};
         proxy.user[1].$set('abc');
-        assert.equal(data, expected);
+        assert.deepEqual(data, expected);
     });
 
 });
