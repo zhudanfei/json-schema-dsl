@@ -6,6 +6,10 @@ function isInteger(value){
     return Number.isInteger(value);
 }
 
+ function isNumber(value) {
+     return typeof(value) === 'number';
+ }
+
 function isBoolean(value){
     return typeof(value) === 'boolean';
 }
@@ -38,6 +42,7 @@ function getPathString(path){
 module.exports = {
     isString: isString,
     isInteger: isInteger,
+    isNumber: isNumber,
     isBoolean: isBoolean,
     isDict: isDict,
     isList: isList,

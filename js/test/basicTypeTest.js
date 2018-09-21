@@ -58,6 +58,32 @@ describe('JSON Integer Type', function(){
     });
 });
 
+describe('JSON Number Type', function(){
+    it('Integer should return null if input is null', function(){
+        assert.equal(null, basicType.numberType(null, []))
+    });
+    it('Integer should return input if input is an integer', function(){
+        assert.equal(5, basicType.numberType(5, []))
+    });
+    it('Integer should throw error if input is a string', function(){
+        assert.throws(() => basicType.numberType('6abc', ['node', '3']), Error, "node.3:Should be an number")
+    });
+    it('Integer should return input if input is a float', function(){
+        assert.equal(3.4, basicType.numberType(3.4, []))
+    });
+    it('Integer should throw error if input is a boolean', function(){
+        assert.throws(() => basicType.numberType(true, null), Error, "Should be an number")
+    });
+    it('Integer should throw error if input is an object', function(){
+        const obj = {'a':1, 'b':2};
+        assert.throws(() => basicType.numberType(obj, ['node', '3']), Error, "node.3:Should be an number")
+    });
+    it('Integer should throw error if input is an array', function(){
+        const arr = [1,3,5];
+        assert.throws(() => basicType.numberType(arr, ['node']), Error, "node:Should be an number")
+    });
+});
+
 describe('JSON Boolean Type', function(){
     it('Boolean should return null if input is null', function(){
         assert.equal(null, basicType.booleanType(null, []))

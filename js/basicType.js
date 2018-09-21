@@ -26,6 +26,17 @@ function integerType(value, path){
     return value;
 }
 
+function numberType(value, path){
+    path = path || [];
+    if (value === null) {
+        return null;
+    }
+    if (!common.isNumber(value)){
+        throw new Error(common.getMessage(path, 'Should be an number'));
+    }
+    return value;
+}
+
 function booleanType(value, path){
     path = path || [];
     if (value === null) {
@@ -64,6 +75,7 @@ module.exports = {
     anyType: anyType,
     stringType: stringType,
     integerType: integerType,
+    numberType: numberType,
     booleanType: booleanType,
     stringMap: stringMap
 };
