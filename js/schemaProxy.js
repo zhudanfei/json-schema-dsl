@@ -15,33 +15,58 @@ function findField(schemaObject, fieldName){
     return null;
 }
 
-function getter(schemaObj, path, obj){
-    for (const name of path){
-        if (schemaObj.type === 'Object'){
-            const field = findField(schemaObj, name);
-            if (field === null){
-                return undefined;
-            }
-            if (obj[name] === undefined || obj[name] === null){
-                return null;
-            }
-            schemaObj = field.fieldType;
-            obj = obj[name];
-        } else if (schemaObj.type === 'Array'){
-            const index = convertToInteger(name);
-            if (index === null){
-                return undefined;
-            }
-            schemaObj = schemaObj.elementType;
-            obj = obj[index];
-        } else if (schemaObj.type === 'StringMap') {
-            schemaObj = {};
-            obj = obj[name];
-        } else {
-            throw new Error('Path is too long')
-        }
+function getObjectField(schemaObj, obj, name){
+    const field = findField(schemaObj, name);
+    if (field === null){
+        throw undefined;
     }
-    return obj;
+    if (obj[name] === undefined || obj[name] === null){
+        throw null;
+    }
+    return [field.fieldType, obj[name]];
+}
+
+function getArrayField(schemaObj, obj, name){
+    const index = convertToInteger(name);
+    if (index === null){
+        throw undefined;
+    }
+    return [schemaObj.elementType, obj[index]];
+}
+
+function getStringMapField(schemaObj, obj, name){
+    return [{}, obj[name]]
+}
+
+function getBasicField(schemaObj, obj, name){
+    throw new Error('Path is too long')
+}
+
+const FieldTypeGetterMap = {
+    Object: getObjectField,
+    Array: getArrayField,
+    StringMap: getStringMapField,
+    String: getBasicField,
+    Integer: getBasicField,
+    Boolean: getBasicField
+};
+
+function getField(schemaObj, obj, name){
+    return FieldTypeGetterMap[schemaObj.type](schemaObj, obj, name);
+}
+
+function getter(schemaObj, path, obj){
+    try {
+        for (const name of path) {
+            [schemaObj, obj] = getField(schemaObj, obj, name);
+        }
+        return obj;
+    } catch(err){
+        if (err === null || err === undefined){
+            return err;
+        }
+        throw err;
+    }
 }
 
 function createProxy(schemaObject, path = []){
