@@ -29,13 +29,13 @@ function getObjectField(schemaObj, obj, name){
 function getArrayField(schemaObj, obj, name){
     const index = convertToInteger(name);
     if (index === null){
-        throw undefined;
+        throw new Error('Index should be integer');
     }
     return [schemaObj.elementType, obj[index]];
 }
 
 function getStringMapField(schemaObj, obj, name){
-    return [{}, obj[name]]
+    return [{type: 'String'}, obj[name]]
 }
 
 function getBasicField(schemaObj, obj, name){
@@ -70,7 +70,7 @@ function getter(schemaObj, path, obj){
 }
 
 function walkFieldCommon(obj, name, fieldType){
-    if (fieldType.type !== 'Object' && fieldType.type !== 'Array'){
+    if (fieldType.type !== 'Object' && fieldType.type !== 'Array' && fieldType.type !== 'StringMap'){
         throw new Error('Path is too long');
     }
     if (obj[name] === undefined || obj[name] === null){
@@ -102,13 +102,14 @@ function walkArrayField(schemaObj, obj, name){
 }
 
 function walkFields(schemaObj, obj, path){
-    for (const name of path){
+    for (let i = 0; i < path.length; i++){
+        const name = path[i];
         if (schemaObj.type === 'Object'){
             [schemaObj, obj] = walkObjectField(schemaObj, obj, name);
         } else if (schemaObj.type === 'Array') {
             [schemaObj, obj] = walkArrayField(schemaObj, obj, name);
         } else {
-            throw new Error('Only object & array are supported');
+            throw new Error('Path is too long');
         }
     }
     return [schemaObj, obj];
@@ -121,12 +122,14 @@ function setField(schemaObj, obj, name, value){
             throw new Error('Unrecognized field: ' + name);
         }
         obj[name] = value;
-    } else {
+    } else if (schemaObj.type === 'Array'){
         const index = convertToInteger(name);
         if (index === null){
             throw new Error('Index should be integer');
         }
         obj[index] = value;
+    } else {
+        obj[name] = value;
     }
 }
 

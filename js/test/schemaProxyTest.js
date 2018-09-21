@@ -110,11 +110,10 @@ describe('Schema 1 proxy getter', function () {
         assert.equal(actual, expected);
     });
 
-    it('Should return undefined if name is string in the array', function () {
+    it('Should throw error if name is string in the array', function () {
         const data = {node: '5', user: ['abc', 'xyz']};
         const proxy = schemaProxy.createProxy(data, schema1);
-        const actual = proxy.user.a.$get();
-        assert.isUndefined(actual);
+        assert.throws(() => proxy.user.a.$get(), Error, "Index should be integer");
     });
 
     it('Should return value in the array of object', function () {
@@ -125,11 +124,10 @@ describe('Schema 1 proxy getter', function () {
         assert.equal(actual, expected);
     });
 
-    it('Should return undefined if name is string in the array', function () {
+    it('Should throw error if name is string in the array of object', function () {
         const data = {node: '5', event: [{name: 'abc'}, {name: 'xyz'}]};
         const proxy = schemaProxy.createProxy(data, schema1);
-        const actual = proxy.event.x.name.$get();
-        assert.isUndefined(actual);
+        assert.throws(() => proxy.event.x.name.$get(), Error, "Index should be integer");
     });
 
     it('Should throw error if path is longer', function () {
@@ -150,6 +148,12 @@ describe('Schema 1 proxy getter', function () {
         const expected = 'xyz';
         const actual = proxy.spec.size.$get();
         assert.equal(actual, expected);
+    });
+
+    it('Should throw error if path is too long in string map', function () {
+        const data = {node: '5', spec: {def: '1', size: 'xyz'}};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        assert.throws(() => proxy.spec.size.abc.$get(), Error, 'Path is too long');
     });
 
 });
@@ -223,6 +227,78 @@ describe('Schema 1 proxy setter', function () {
         const expected = {node: '5', user: ['abc', 'abc']};
         proxy.user[1].$set('abc');
         assert.deepEqual(data, expected);
+    });
+
+    it('Should set value in an empty array', function () {
+        const data = {node: '5'};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        const expected = {node: '5', user: [undefined, 'abc']};
+        proxy.user[1].$set('abc');
+        assert.deepEqual(data, expected);
+    });
+
+    it('Should throw error if index is not an integer', function () {
+        const data = {node: '5', user: ['abc', 'xyz']};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        proxy.user[1].$set('abc');
+        assert.throws(() => proxy.user.x.$set('abc'), Error, 'Index should be integer');
+    });
+
+    it('Should set value in the array of object', function () {
+        const data = {node: '5', event: [{name: 'abc'}, {name: 'xyz'}]};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        const expected = {node: '5', event: [{name: 'abc'}, {name: 'def'}]};
+        proxy.event[1].name.$set('def');
+        assert.deepEqual(data, expected);
+    });
+
+    it('Should set value in an empty array of object', function () {
+        const data = {node: '5'};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        const expected = {node: '5', event: [undefined, {name: 'def'}]};
+        proxy.event[1].name.$set('def');
+        assert.deepEqual(data, expected);
+    });
+
+    it('Should throw error if index is not an integer in an array of object', function () {
+        const data = {node: '5', event: [{name: 'abc'}, {name: 'xyz'}]};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        assert.throws(() => proxy.event.x.$set('abc'), Error, 'Index should be integer');
+    });
+
+    it('Should throw error if path is longer', function () {
+        const data = {node: '5', event: [{name: 'abc'}, {name: 'xyz'}]};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        assert.throws(() => proxy.event[0].name.abc.$set('abc'), Error, "Path is too long");
+    });
+
+    it('Should throw error if value is missing in the array of object', function () {
+        const data = {node: '5', event: [{name: 'abc'}, {name: 'xyz'}]};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        assert.throws(() => proxy.event[0].nam.$set('abc'), Error, "Unrecognized field: nam");
+    });
+
+    it('Should set value in a string map', function () {
+        const data = {node: '5', spec: {def: '1', size: 'xyz'}};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        const expected = {node: '5', spec: {def: '1', size: 'abc'}};
+        proxy.spec.size.$set('abc');
+        assert.deepEqual(data, expected);
+    });
+
+    it('Should add value in a string map', function () {
+        const data = {node: '5', spec: {def: '1', size: 'xyz'}};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        const expected = {node: '5', spec: {def: '1', size: 'xyz', abc: 'def'}};
+        proxy.spec.abc.$set('def');
+        assert.deepEqual(data, expected);
+    });
+
+    it('Should throw error if path is too long in a string map', function () {
+        const data = {node: '5', spec: {def: '1', size: 'xyz'}};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        const expected = {node: '5', spec: {def: '1', size: 'abc'}};
+        assert.throws(() => proxy.spec.size.abc.$set('abc')('abc'), Error, "Path is too long");
     });
 
 });
