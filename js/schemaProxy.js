@@ -69,31 +69,34 @@ function getter(schemaObj, path, obj){
     }
 }
 
+function setObjectField(schemaObj, obj, value, name){
+    const field = findField(schemaObj, name);
+    if (field === null){
+        throw new Error('Unrecognized field: ' + name);
+    }
+    if (field.fieldType.type !== 'Object' && field.fieldType.type !== 'Array'){
+        throw new Error('Path is too long');
+    }
+    if (field.fieldType.type === 'Object'){
+        if (obj[name] === undefined || obj[name] === null){
+            obj[name] = {};
+        }
+    } else {
+        if (obj[name] === undefined || obj[name] === null){
+            obj[name] = [];
+        }
+    }
+    return [field.fieldType, obj[name]];
+}
+
 function setter(schemaObj, path, obj, value){
     if (path.length === 0){
         throw new Error('Cannot set itself');
     }
     for (let i = 0; i < path.length - 1; i++){
         const name = path[i];
-        const field = findField(schemaObj, name);
-        if (field === null){
-            throw new Error('Unrecognized field: ' + name);
-        }
-        if (field.fieldType.type !== 'Object' && field.fieldType.type !== 'Array'){
-            throw new Error('Path is too long');
-        }
-        if (field.fieldType.type === 'Object'){
-            if (obj[name] === undefined || obj[name] === null){
-                obj[name] = {};
-            }
-            schemaObj = field.fieldType;
-            obj = obj[name];
-        } else {
-            if (obj[name] === undefined || obj[name] === null){
-                obj[name] = [];
-            }
-            schemaObj = field.fieldType;
-            obj = obj[name];
+        if (schemaObj.type === 'Object'){
+            [schemaObj, obj] = setObjectField(schemaObj, obj, value, name);
         }
     }
     const name = path[path.length - 1];
