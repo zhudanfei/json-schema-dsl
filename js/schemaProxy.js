@@ -69,8 +69,8 @@ function getter(schemaObj, path, obj){
     }
 }
 
-function createProxy(schemaObject, path = []){
-    return new Proxy(function(obj){}, new SchemaProxy(schemaObject, path));
+function createProxy(target, schemaObject, path = []){
+    return new Proxy(target, new SchemaProxy(schemaObject, path));
 }
 
 class SchemaProxy {
@@ -80,11 +80,14 @@ class SchemaProxy {
     }
 
     get(target, fieldName, receiver){
-        return createProxy(this.$schemaObject, this.$path.concat([fieldName]));
+        if (fieldName === '$get'){
+            return this.$get(target);
+        }
+        return createProxy(target, this.$schemaObject, this.$path.concat([fieldName]));
     }
 
-    apply(target, thisArg, argumentsList){
-        return getter(this.$schemaObject, this.$path, argumentsList[0]);
+    $get(target){
+        return () => getter(this.$schemaObject, this.$path, target);
     }
 }
 
