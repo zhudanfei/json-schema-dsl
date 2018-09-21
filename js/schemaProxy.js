@@ -80,12 +80,7 @@ class SchemaProxy {
     }
 
     get(target, fieldName, receiver){
-        if (this[fieldName] !== undefined){
-            return this[fieldName];
-        }
-        const newPath = this.$path.concat([fieldName]);
-        this[fieldName] = createProxy(this.$schemaObject, newPath);
-        return this[fieldName];
+        return createProxy(this.$schemaObject, this.$path.concat([fieldName]));
     }
 
     apply(target, thisArg, argumentsList){
