@@ -43,8 +43,7 @@ describe('Schema 1 proxy', function () {
 
     it('Should return undefined if the name is not in the schema first level', function () {
         const data = {node: '5'};
-        const actual = proxy.nod(data);
-        assert.isUndefined(actual);
+        assert.throws(() => proxy.nod(data), Error, "Unrecognized field: nod");
     });
 
     it('Should return null if the value is missing schema first level', function () {
@@ -68,19 +67,17 @@ describe('Schema 1 proxy', function () {
 
     it('Should throw error if there is no second level', function () {
         const data = {node: '5', tag: {name: 'abc', level: 10}};
-        assert.throws(() =>  proxy.tag.level.x(data), Error, "Path is too long");
+        assert.throws(() => proxy.tag.level.x(data), Error, "Path is too long");
     });
 
     it('Should return undefined if the name is not in the schema second level', function () {
         const data = {tag: {name: 'abc', level: 10}};
-        const actual = proxy.tag.node(data);
-        assert.isUndefined(actual);
+        assert.throws(() => proxy.tag.node(data), Error, "Unrecognized field: node");
     });
 
     it('Should return undefined if the name is not in the schema twice', function () {
         const data = {tag: {name: 'abc', level: 10}};
-        const actual = proxy.nod.node(data);
-        assert.isUndefined(actual);
+        assert.throws(() => proxy.nod.node(data), Error, "Unrecognized field: nod");
     });
 
     it('Should return null if the value is missing schema second level', function () {
@@ -129,17 +126,16 @@ describe('Schema 1 proxy', function () {
 
     it('Should return undefined if path is longer', function () {
         const data = {node: '5', event: [{name: 'abc'}, {name: 'xyz'}]};
-        assert.throws(() =>  proxy.event[0].name.abc(data), Error, "Path is too long");
+        assert.throws(() => proxy.event[0].name.abc(data), Error, "Path is too long");
     });
 
     it('Should return undefined if value is missing in the array of object', function () {
         const data = {node: '5', event: [{name: 'abc'}, {name: 'xyz'}]};
-        const actual = proxy.event[0].nam(data);
-        assert.isUndefined(actual);
+        assert.throws(() => proxy.event[0].nam(data), Error, "Unrecognized field: nam");
     });
 
     it('Should return value in a string map', function () {
-        const data = {node: '5', spec: {def:'1', size:'xyz'}};
+        const data = {node: '5', spec: {def: '1', size: 'xyz'}};
         const expected = 'xyz';
         const actual = proxy.spec.size(data);
         assert.equal(actual, expected);

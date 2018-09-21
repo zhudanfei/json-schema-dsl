@@ -18,7 +18,7 @@ function findField(schemaObject, fieldName){
 function getObjectField(schemaObj, obj, name){
     const field = findField(schemaObj, name);
     if (field === null){
-        throw undefined;
+        throw new Error('Unrecognized field: ' + name);
     }
     if (obj[name] === undefined || obj[name] === null){
         throw null;
