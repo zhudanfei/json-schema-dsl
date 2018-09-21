@@ -145,24 +145,24 @@ describe('Incoming Schema 5', function() {
 });
 
 const schema6 = JsonObject(
-    JsonField('name', JsonString),
+    JsonField('name', JsonNumber),
     JsonField('spec', JsonStringMap, NotNull),
 );
 
 describe('Incoming Schema 6', function() {
     it('Should throw error when type is not match', function () {
-        const data = {name:'abc', spec:'def'};
+        const data = {name:1.99, spec:'def'};
         assert.throws(() => jsonIncoming.convert(schema6,data), Error, "spec:Should be an object");
     });
 
     it('Should throw error when an integer is in a string map', function () {
-        const data = {name:'abc', spec:{def:1, size:'xyz'}};
+        const data = {name:1.99, spec:{def:1, size:'xyz'}};
         assert.throws(() => jsonIncoming.convert(schema6,data), Error, "spec.def:Should be a string");
     });
 
-    it('Should convert string map', function () {
-        const data = {name:'abc', spec:{def:'1', size:'xyz'}};
-        const expected = {name:'abc', spec:{def:'1', size:'xyz'}};
+    it('Should convert string map & number', function () {
+        const data = {name:1.99, spec:{def:'1', size:'xyz'}};
+        const expected = {name:1.99, spec:{def:'1', size:'xyz'}};
         const actual = jsonIncoming.convert(schema6,data, ROOT);
         assert.deepEqual(actual, expected);
     });

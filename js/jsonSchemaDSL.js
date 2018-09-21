@@ -1,6 +1,7 @@
 JsonAny = {type: 'Any'};
 JsonString = {type: 'String'};
 JsonInteger = {type: 'Integer'};
+JsonNumber = {type: 'Number'};
 JsonBoolean = {type: 'Boolean'};
 JsonStringMap = {type: 'StringMap'};
 JsonField = function (name, fieldType, ...filters){

@@ -112,6 +112,7 @@ function schemaWrap(converter){
 const typeFunctionMap = {
     String: schemaWrap(basicType.stringType),
     Integer: schemaWrap(basicType.integerType),
+    Number: schemaWrap(basicType.numberType),
     Boolean: schemaWrap(basicType.booleanType),
     StringMap: schemaWrap(basicType.stringMap),
     Object: convertObject,
