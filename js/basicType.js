@@ -32,7 +32,7 @@ function numberType(value, path){
         return null;
     }
     if (!common.isNumber(value)){
-        throw new Error(common.getMessage(path, 'Should be an number'));
+        throw new Error(common.getMessage(path, 'Should be a number'));
     }
     return value;
 }

@@ -19,6 +19,9 @@ describe('JSON String Type', function(){
     it('String should throw error if input is an integer', function(){
         assert.throws(() => basicType.stringType(4, ['node', '3']), Error, "node.3: Should be a string")
     });
+    it('String should throw error if input is a float', function(){
+        assert.throws(() => basicType.stringType(3.4, ['3']), Error, "3: Should be a string")
+    });
     it('String should throw error if input is a boolean', function(){
         assert.throws(() => basicType.stringType(false, ['node']), Error, "node: Should be a string")
     });
@@ -65,22 +68,22 @@ describe('JSON Number Type', function(){
     it('Integer should return input if input is an integer', function(){
         assert.equal(basicType.numberType(5, []), 5)
     });
-    it('Integer should throw error if input is a string', function(){
-        assert.throws(() => basicType.numberType('6abc', ['node', '3']), Error, "node.3: Should be an number")
-    });
     it('Integer should return input if input is a float', function(){
         assert.equal(3.4, basicType.numberType(3.4, []))
     });
+    it('Integer should throw error if input is a string', function(){
+        assert.throws(() => basicType.numberType('6abc', ['node', '3']), Error, "node.3: Should be a number")
+    });
     it('Integer should throw error if input is a boolean', function(){
-        assert.throws(() => basicType.numberType(true, null), Error, "Should be an number")
+        assert.throws(() => basicType.numberType(true, null), Error, "Should be a number")
     });
     it('Integer should throw error if input is an object', function(){
         const obj = {'a':1, 'b':2};
-        assert.throws(() => basicType.numberType(obj, ['node', '3']), Error, "node.3: Should be an number")
+        assert.throws(() => basicType.numberType(obj, ['node', '3']), Error, "node.3: Should be a number")
     });
     it('Integer should throw error if input is an array', function(){
         const arr = [1,3,5];
-        assert.throws(() => basicType.numberType(arr, ['node']), Error, "node: Should be an number")
+        assert.throws(() => basicType.numberType(arr, ['node']), Error, "node: Should be a number")
     });
 });
 
@@ -91,11 +94,14 @@ describe('JSON Boolean Type', function(){
     it('Boolean should return input if input is a boolean', function(){
         assert.equal(basicType.booleanType(true, []), true)
     });
+    it('Boolean should throw error if input is a string', function(){
+        assert.throws(() => basicType.booleanType('abc', ['node']), Error, "node: Should be a boolean")
+    });
     it('Boolean should throw error if input is an integer', function(){
         assert.throws(() => basicType.booleanType(4, ['node', '3']), Error, "node.3: Should be a boolean")
     });
-    it('Boolean should throw error if input is a string', function(){
-        assert.throws(() => basicType.booleanType('abc', ['node']), Error, "node: Should be a boolean")
+    it('Boolean should throw error if input is a float', function(){
+        assert.throws(() => basicType.booleanType(3.4, ['3']), Error, "3: Should be a boolean")
     });
     it('Boolean should throw error if input is an object', function(){
         const obj = {'a':1, 'b':2};
@@ -115,11 +121,14 @@ describe('JSON String Map', function(){
         const sm = {'a':'b', 'd':'c'};
         assert.equal(basicType.stringMap(sm, []), sm)
     });
+    it('StringMap should throw error if input is a string', function(){
+        assert.throws(() => basicType.stringMap('abc', ['node']), Error, "node: Should be an object")
+    });
     it('StringMap should throw error if input is an integer', function(){
         assert.throws(() => basicType.stringMap(4, ['node', '3']), Error, "node.3: Should be an object")
     });
-    it('StringMap should throw error if input is a string', function(){
-        assert.throws(() => basicType.stringMap('abc', ['node']), Error, "node: Should be an object")
+    it('StringMap should throw error if input is a float', function(){
+        assert.throws(() => basicType.stringMap(3.4, ['3']), Error, "3: Should be an object")
     });
     it('StringMap should throw error if input is a boolean', function(){
         assert.throws(() => basicType.stringMap(false, ['node']), Error, "node: Should be an object")
