@@ -7,13 +7,13 @@ describe('Date Time', function() {
     it('Should convert short ISO string to date', function(){
         const input = '1970-01-02T00:00:00.000Z';
         const timestamp = filters.toTimestamp(input, null);
-        assert.equal(24 * 3600 * 1000, timestamp);
+        assert.equal(timestamp, 24 * 3600 * 1000);
     });
 
     it('Should convert long ISO string to date', function(){
         const input = '1970-01-02T00:00:00.000000Z';
         const timestamp = filters.toTimestamp(input, null);
-        assert.equal(24 * 3600 * 1000, timestamp);
+        assert.equal(timestamp, 24 * 3600 * 1000);
     });
 });
 
@@ -21,7 +21,7 @@ describe('Length', function () {
     it('Should return value if length is not too long', function(){
         const f = filters.maxLength(4);
         const value = '太空旅客';
-        assert.equal(value, f(value, null));
+        assert.equal(f(value, null), value);
     });
 
     it('Should return value if length is too long', function(){

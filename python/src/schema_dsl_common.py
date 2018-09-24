@@ -5,5 +5,7 @@ def get_path_string(path):
 
 
 def get_message(path, msg):
+    if len(path) == 0:
+        return msg
     return get_path_string(path) + ': ' + msg
 
