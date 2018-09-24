@@ -113,6 +113,7 @@ schema3 = JsonObject(
     JsonField('node', JsonString, not_null, max_length(4)),
 )
 
+
 class TestSchema3(unittest.TestCase):
     def test_not_null(self):
         data = {'node': None}
@@ -120,7 +121,7 @@ class TestSchema3(unittest.TestCase):
             json_incoming.convert(schema3, data)
             self.assertTrue(False)
         except ValueError as ex:
-            print ex
+            self.assertEqual('node: Cannot be null', ex.message)
 
     def test_two_filters(self):
         data = {'node': 'abcde'}
@@ -159,6 +160,7 @@ schema5 = JsonObject(
     JsonField('event_id', JsonArray(JsonInteger), not_null),
 )
 
+
 class TestSchema5(unittest.TestCase):
     def test_empty_array(self):
         data = {'node': 'abc'}
@@ -167,6 +169,7 @@ class TestSchema5(unittest.TestCase):
             self.assertTrue(False)
         except ValueError as ex:
             self.assertEqual('event_id: Cannot be null', ex.message)
+
 
 schema6 = JsonObject(
     JsonField('name', JsonString),
