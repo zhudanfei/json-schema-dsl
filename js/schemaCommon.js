@@ -36,7 +36,7 @@ function getPathString(path){
     if (path.length === 0){
         return msg;
     }
-    return getPathString(path) + ':' + msg;
+    return getPathString(path) + ': ' + msg;
 }
 
 module.exports = {

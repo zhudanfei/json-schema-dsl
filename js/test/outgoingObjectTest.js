@@ -22,7 +22,7 @@ const schema1 = JsonObject(
 describe('Outgoing Schema 1', function(){
     it('Should throw error when get an integer value in string field', function() {
         const data = {node: 5};
-        assert.throws(() => jsonOutgoing.convert(schema1, data), Error, "node:Should be a string");
+        assert.throws(() => jsonOutgoing.convert(schema1, data), Error, "node: Should be a string");
     });
 
     it('Should return array', function() {
@@ -34,12 +34,12 @@ describe('Outgoing Schema 1', function(){
 
     it('Should throw error when the type of an element in array is not correct', function() {
         const data = {user:['abc', 5, 'xxxxxx']};
-        assert.throws(() => jsonOutgoing.convert(schema1, data), Error, "user.1:Should be a string");
+        assert.throws(() => jsonOutgoing.convert(schema1, data), Error, "user.1: Should be a string");
     });
 
     it('Should throw error when get a string value in object field', function() {
         const data = {tag: 'abc'};
-        assert.throws(() => jsonOutgoing.convert(schema1, data), Error, "tag:Should be an object");
+        assert.throws(() => jsonOutgoing.convert(schema1, data), Error, "tag: Should be an object");
     });
 
     it('Should return object', function() {
@@ -104,12 +104,12 @@ const schema4 = JsonObject(
 describe('Outgoing Schema 4 StringMap', function() {
     it('Should throw error when the type is not object', function() {
         const data = {name:'abc', spec:'def'};
-        assert.throws(() => jsonOutgoing.convert(schema4, data), Error, "spec:Should be an object");
+        assert.throws(() => jsonOutgoing.convert(schema4, data), Error, "spec: Should be an object");
     });
 
     it('Should throw error when the element type is not string', function () {
         const data = {name:'abc', spec:{def:1, size:'xyz'}};
-        assert.throws(() => jsonOutgoing.convert(schema4, data), Error, "spec.def:Should be a string");
+        assert.throws(() => jsonOutgoing.convert(schema4, data), Error, "spec.def: Should be a string");
     });
 
     it('Should return string map', function () {

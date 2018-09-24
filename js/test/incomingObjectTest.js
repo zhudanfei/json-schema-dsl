@@ -26,7 +26,7 @@ const schema1 = JsonObject(
 describe('Incoming Schema 1', function(){
     it('Should throw error when get an integer value in string field', function() {
         const data = {node: 5};
-        assert.throws(() => jsonIncoming.convert(schema1, data), Error, "node:Should be a string");
+        assert.throws(() => jsonIncoming.convert(schema1, data), Error, "node: Should be a string");
     });
 
     it('Should return array', function() {
@@ -38,17 +38,17 @@ describe('Incoming Schema 1', function(){
 
     it('Should throw error when the type of an element in array is not correct', function() {
         const data = {user:['abc', 5, 'xxxxxx']};
-        assert.throws(() => jsonIncoming.convert(schema1, data), Error, "user.1:Should be a string");
+        assert.throws(() => jsonIncoming.convert(schema1, data), Error, "user.1: Should be a string");
     });
 
     it('Should throw error if the value is larger than the upper limit', function() {
         const data = {tag: {name: 'abc', level: 4}};
-        assert.throws(() => jsonIncoming.convert(schema1, data), Error, "tag.level:Value is too large");
+        assert.throws(() => jsonIncoming.convert(schema1, data), Error, "tag.level: Value is too large");
     });
 
     it('Should throw error when get a string value in object field', function() {
         const data = {tag: 'abc'};
-        assert.throws(() => jsonIncoming.convert(schema1, data), Error, "tag:Should be an object");
+        assert.throws(() => jsonIncoming.convert(schema1, data), Error, "tag: Should be an object");
     });
 
     it('Should return object', function() {
@@ -60,7 +60,7 @@ describe('Incoming Schema 1', function(){
 
     it('Should throw error when the length of an element exceed the limit', function() {
         const data = {event: [{name: 'abcd', alarm: true}, {name: 'def', alarm: false}]};
-        assert.throws(() => jsonIncoming.convert(schema1, data), Error, "event.0.name:String is too long");
+        assert.throws(() => jsonIncoming.convert(schema1, data), Error, "event.0.name: String is too long");
     });
 
     it('Should return array of object', function() {
@@ -104,17 +104,17 @@ const schema3 = JsonObject(
 describe('Incoming Schema 3', function() {
     it('Should throw error when get a null in a not null field', function () {
         const data = {node: null};
-        assert.throws(() => jsonIncoming.convert(schema3, data), Error, "node:Cannot be null");
+        assert.throws(() => jsonIncoming.convert(schema3, data), Error, "node: Cannot be null");
     });
 
     it('Should support 2 filters', function () {
         const data = {node: 'abcde'};
-        assert.throws(() => jsonIncoming.convert(schema3, data, ROOT), Error, "root.node:String is too long");
+        assert.throws(() => jsonIncoming.convert(schema3, data, ROOT), Error, "root.node: String is too long");
     });
 
     it('Should throw error if there is a redundant field', function () {
         const data = {node: 'abcd', xxx:6};
-        assert.throws(() => jsonIncoming.convert(schema3, data, ROOT), Error, "root:Unrecognized field: xxx");
+        assert.throws(() => jsonIncoming.convert(schema3, data, ROOT), Error, "root: Unrecognized field: xxx");
     });
 
 });
@@ -126,7 +126,7 @@ const schema4 = JsonArray(JsonObject(
 describe('Incoming Schema 4', function() {
     it('Should throw error when the length of an item exceed the limit', function () {
         const data = [{arrayOfObject: 'def'}, {arrayOfObject: 'abcde'}];
-        assert.throws(() => jsonIncoming.convert(schema4,data), Error, "1.arrayOfObject:String is too long");
+        assert.throws(() => jsonIncoming.convert(schema4,data), Error, "1.arrayOfObject: String is too long");
     });
 
 });
@@ -139,7 +139,7 @@ const schema5 = JsonObject(
 describe('Incoming Schema 5', function() {
     it('Should throw error when get a null in a not null field', function () {
         const data = {node: 'abc'};
-        assert.throws(() => jsonIncoming.convert(schema5,data), Error, "event_id:Cannot be null");
+        assert.throws(() => jsonIncoming.convert(schema5,data), Error, "event_id: Cannot be null");
     });
 
 });
@@ -152,12 +152,12 @@ const schema6 = JsonObject(
 describe('Incoming Schema 6', function() {
     it('Should throw error when type is not match', function () {
         const data = {name:1.99, spec:'def'};
-        assert.throws(() => jsonIncoming.convert(schema6,data), Error, "spec:Should be an object");
+        assert.throws(() => jsonIncoming.convert(schema6,data), Error, "spec: Should be an object");
     });
 
     it('Should throw error when an integer is in a string map', function () {
         const data = {name:1.99, spec:{def:1, size:'xyz'}};
-        assert.throws(() => jsonIncoming.convert(schema6,data), Error, "spec.def:Should be a string");
+        assert.throws(() => jsonIncoming.convert(schema6,data), Error, "spec.def: Should be a string");
     });
 
     it('Should convert string map & number', function () {
