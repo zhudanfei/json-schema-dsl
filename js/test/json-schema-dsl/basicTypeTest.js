@@ -1,7 +1,7 @@
 const assert = require('chai').assert;
 const expect = require('chai').expect;
 
-const basicType = require('../basicType');
+const basicType = require('../../src/json-schema-dsl/basicType');
 
 describe('JSON Any Type', function() {
     it('Should return value', function () {

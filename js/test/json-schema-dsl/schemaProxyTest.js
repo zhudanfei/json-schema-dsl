@@ -1,8 +1,8 @@
 const assert = require('chai').assert;
 const expect = require('chai').expect;
 
-require('../jsonSchemaDSL');
-const schemaProxy = require('../schemaProxy');
+require('../../src/json-schema-dsl/jsonSchemaDSL');
+const schemaProxy = require('../../src/json-schema-dsl/schemaProxy');
 
 const schema1 = JsonObject(
     JsonField('node', JsonString),

@@ -1,9 +1,9 @@
 const assert = require('chai').assert;
 const expect = require('chai').expect;
 
-require('../jsonSchemaDSL');
-const filters = require('../filters');
-const jsonOutgoing = require('../jsonOutgoing');
+require('../../src/json-schema-dsl/jsonSchemaDSL');
+const filters = require('../../src/json-schema-dsl/filters');
+const jsonOutgoing = require('../../src/json-schema-dsl/jsonOutgoing');
 
 const IntegerToString = filters.integerToString;
 

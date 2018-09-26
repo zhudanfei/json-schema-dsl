@@ -1,7 +1,7 @@
 const assert = require('chai').assert;
 const expect = require('chai').expect;
 
-const filters = require('../filters');
+const filters = require('../../src/json-schema-dsl/filters');
 
 describe('Date Time', function() {
     it('Should convert short ISO string to date', function(){

@@ -1,9 +1,9 @@
 const assert = require('chai').assert;
 const expect = require('chai').expect;
 
-require('../jsonSchemaDSL');
-const filters = require('../filters');
-const jsonIncoming = require('../jsonIncoming');
+require('../../src/json-schema-dsl/jsonSchemaDSL');
+const filters = require('../../src/json-schema-dsl/filters');
+const jsonIncoming = require('../../src/json-schema-dsl/jsonIncoming');
 
 const MaxLength = filters.maxLength;
 const MinLength = filters.minLength;
