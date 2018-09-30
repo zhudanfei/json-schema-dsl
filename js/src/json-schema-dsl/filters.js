@@ -1,8 +1,8 @@
 const common = require('./schemaCommon');
 
 function toDate(value, path){
-    if (value === null){
-        return null;
+    if (value === undefined || value === null) {
+        return value;
     }
     try {
         return new Date(value);
@@ -13,30 +13,30 @@ function toDate(value, path){
 
 function toTimestamp(value, path){
     let dt = toDate(value, path);
-    if (dt == null){
-        return null;
+    if (dt === undefined || dt === null) {
+        return dt;
     }
     return dt.getTime();
 }
 
 function notNull(value, path){
-    if (value === null){
+    if (value === undefined || value === null){
         throw new Error(common.getMessage(path, 'Cannot be null'));
     }
     return value;
 }
 
 function trim(value, path){
-    if (value === null){
-        return null;
+    if (value === undefined || value === null) {
+        return value;
     }
     return value.trim();
 }
 
 function maxLength(length){
     return function (value, path){
-        if (value === null){
-            return null;
+        if (value === undefined || value === null) {
+            return value;
         }
         if (value.length > length){
             throw new Error(common.getMessage(path, 'String is too long'));
@@ -47,8 +47,8 @@ function maxLength(length){
 
 function minLength(length){
     return function (value, path){
-        if (value === null){
-            return null;
+        if (value === undefined || value === null) {
+            return value;
         }
         if (value.length < length){
             throw new Error(common.getMessage(path, 'String is too short'));
@@ -59,8 +59,8 @@ function minLength(length){
 
 function lengthRange(low, high){
     return function (value, path){
-        if (value === null){
-            return null;
+        if (value === undefined || value === null) {
+            return value;
         }
         if (value.length < low){
             throw new Error(common.getMessage(path, 'String is too short'));
@@ -75,8 +75,8 @@ function lengthRange(low, high){
 function only(...options){
     let optionSet = new Set(options);
     return function (value, path){
-        if (value === null){
-            return null;
+        if (value === undefined || value === null) {
+            return value;
         }
         if (!optionSet.has(value)){
             throw new Error(common.getMessage(path, 'Invalid value'));
@@ -87,8 +87,8 @@ function only(...options){
 
 function range(low, high){
     return function (value, path){
-        if (value === null){
-            return null;
+        if (value === undefined || value === null) {
+            return value;
         }
         if (value < low){
             throw new Error(common.getMessage(path, 'Value is too small'));

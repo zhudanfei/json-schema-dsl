@@ -10,6 +10,9 @@ describe('JSON Any Type', function() {
 });
 
 describe('JSON String Type', function(){
+    it('String should return undefined if input is undefined', function(){
+        assert.equal(basicType.stringType(undefined, []), undefined)
+    });
     it('String should return null if input is null', function(){
         assert.equal(basicType.stringType(null, []), null)
     });
@@ -36,6 +39,9 @@ describe('JSON String Type', function(){
 });
 
 describe('JSON Integer Type', function(){
+    it('Integer should return undefined if input is undefined', function(){
+        assert.equal(basicType.integerType(undefined, []), undefined)
+    });
     it('Integer should return null if input is null', function(){
         assert.equal(basicType.integerType(null, []), null)
     });
@@ -62,32 +68,38 @@ describe('JSON Integer Type', function(){
 });
 
 describe('JSON Number Type', function(){
-    it('Integer should return null if input is null', function(){
+    it('Number should return undefined if input is undefined', function(){
+        assert.equal(basicType.numberType(undefined, []), undefined)
+    });
+    it('Number should return null if input is null', function(){
         assert.equal(basicType.numberType(null, []), null)
     });
-    it('Integer should return input if input is an integer', function(){
+    it('Number should return input if input is an integer', function(){
         assert.equal(basicType.numberType(5, []), 5)
     });
-    it('Integer should return input if input is a float', function(){
+    it('Number should return input if input is a float', function(){
         assert.equal(3.4, basicType.numberType(3.4, []))
     });
-    it('Integer should throw error if input is a string', function(){
+    it('Number should throw error if input is a string', function(){
         assert.throws(() => basicType.numberType('6abc', ['node', '3']), Error, "node.3: Should be a number")
     });
-    it('Integer should throw error if input is a boolean', function(){
+    it('Number should throw error if input is a boolean', function(){
         assert.throws(() => basicType.numberType(true, null), Error, "Should be a number")
     });
-    it('Integer should throw error if input is an object', function(){
+    it('Number should throw error if input is an object', function(){
         const obj = {'a':1, 'b':2};
         assert.throws(() => basicType.numberType(obj, ['node', '3']), Error, "node.3: Should be a number")
     });
-    it('Integer should throw error if input is an array', function(){
+    it('Number should throw error if input is an array', function(){
         const arr = [1,3,5];
         assert.throws(() => basicType.numberType(arr, ['node']), Error, "node: Should be a number")
     });
 });
 
 describe('JSON Boolean Type', function(){
+    it('Boolean should return undefined if input is undefined', function(){
+        assert.equal(basicType.booleanType(undefined, []), undefined)
+    });
     it('Boolean should return null if input is null', function(){
         assert.equal(basicType.booleanType(null, []), null)
     });
@@ -114,6 +126,9 @@ describe('JSON Boolean Type', function(){
 });
 
 describe('JSON String Map', function(){
+    it('StringMap should return undefined if input is undefined', function(){
+        assert.equal(basicType.stringMap(undefined, []), undefined)
+    });
     it('StringMap should return null if input is null', function(){
         assert.equal(basicType.stringMap(null, []), null)
     });

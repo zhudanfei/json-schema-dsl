@@ -6,8 +6,8 @@ function anyType(value, path){
 
 function stringType(value, path){
     path = path || [];
-    if (value === null) {
-        return null;
+    if (value === undefined || value === null) {
+        return value;
     }
     if (!common.isString(value)){
         throw new Error(common.getMessage(path, 'Should be a string'));
@@ -17,8 +17,8 @@ function stringType(value, path){
 
 function integerType(value, path){
     path = path || [];
-    if (value === null) {
-        return null;
+    if (value === undefined || value === null) {
+        return value;
     }
     if (!common.isInteger(value)){
         throw new Error(common.getMessage(path, 'Should be an integer'));
@@ -28,8 +28,8 @@ function integerType(value, path){
 
 function numberType(value, path){
     path = path || [];
-    if (value === null) {
-        return null;
+    if (value === undefined || value === null) {
+        return value;
     }
     if (!common.isNumber(value)){
         throw new Error(common.getMessage(path, 'Should be a number'));
@@ -39,8 +39,8 @@ function numberType(value, path){
 
 function booleanType(value, path){
     path = path || [];
-    if (value === null) {
-        return null;
+    if (value === undefined || value === null) {
+        return value;
     }
     if (!common.isBoolean(value)){
         throw new Error(common.getMessage(path, 'Should be a boolean'));
@@ -64,8 +64,8 @@ function validateStringMap(value, path){
 
 function stringMap(value, path){
     path = path || [];
-    if (value === null) {
-        return null;
+    if (value === undefined || value === null) {
+        return value;
     }
     validateStringMap(value, path);
     return value;
