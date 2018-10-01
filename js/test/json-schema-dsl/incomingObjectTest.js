@@ -76,8 +76,8 @@ const schema2 = JsonObject(
     JsonField('node', JsonString, MaxLength(4)),
     JsonField('user', JsonArray(JsonString, MaxLength(6))),
     JsonField('tag', JsonObject(JsonField('name', JsonString, MaxLength(4)),
-        JsonField('level', JsonInteger, Range(0, 3)),
-    )),
+        JsonField('level', JsonInteger, Range(0, 3))
+    ))
 );
 
 describe('Incoming Schema 2', function() {
@@ -98,7 +98,7 @@ describe('Incoming Schema 2', function() {
 });
 
 const schema3 = JsonObject(
-    JsonField('node', JsonString, NotNull, MaxLength(4)),
+    JsonField('node', JsonString, NotNull, MaxLength(4))
 );
 
 describe('Incoming Schema 3', function() {
@@ -120,7 +120,7 @@ describe('Incoming Schema 3', function() {
 });
 
 const schema4 = JsonArray(JsonObject(
-    JsonField('arrayOfObject', JsonString, NotNull, MaxLength(4)),
+    JsonField('arrayOfObject', JsonString, NotNull, MaxLength(4))
 ));
 
 describe('Incoming Schema 4', function() {
@@ -133,7 +133,7 @@ describe('Incoming Schema 4', function() {
 
 const schema5 = JsonObject(
     JsonField('node', JsonString),
-    JsonField('event_id', JsonArray(JsonInteger), NotNull),
+    JsonField('event_id', JsonArray(JsonInteger), NotNull)
 );
 
 describe('Incoming Schema 5', function() {
@@ -146,7 +146,7 @@ describe('Incoming Schema 5', function() {
 
 const schema6 = JsonObject(
     JsonField('name', JsonNumber),
-    JsonField('spec', JsonStringMap, NotNull),
+    JsonField('spec', JsonStringMap, NotNull)
 );
 
 describe('Incoming Schema 6', function() {

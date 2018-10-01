@@ -22,7 +22,7 @@ const schema1 = JsonObject(
         )
         )
     ),
-    JsonField('spec', JsonStringMap),
+    JsonField('spec', JsonStringMap)
 );
 
 describe('Schema 1 proxy getter', function () {

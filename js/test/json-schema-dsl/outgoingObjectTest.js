@@ -10,8 +10,9 @@ const IntegerToString = filters.integerToString;
 const schema1 = JsonObject(
     JsonField('node', JsonString),
     JsonField('user', JsonArray(JsonString)),
-    JsonField('tag', JsonObject(JsonField('name', JsonString),
-        JsonField('level', JsonInteger),
+    JsonField('tag', JsonObject(
+        JsonField('name', JsonString),
+        JsonField('level', JsonInteger)
     )),
     JsonField('event', JsonArray(JsonObject(JsonField('name', JsonString),
         JsonField('alarm', JsonBoolean)
@@ -61,9 +62,10 @@ describe('Outgoing Schema 1', function(){
 const schema2 = JsonObject(
     JsonField('node', JsonString),
     JsonField('user', JsonArray(JsonString)),
-    JsonField('tag', JsonObject(JsonField('name', JsonString),
-        JsonField('level', JsonInteger),
-    )),
+    JsonField('tag', JsonObject(
+        JsonField('name', JsonString),
+        JsonField('level', JsonInteger)
+    ))
 );
 
 describe('Outgoing Schema 2', function() {
@@ -84,7 +86,7 @@ describe('Outgoing Schema 2', function() {
 });
 
 const schema3 = JsonObject(
-    JsonField('node', JsonString),
+    JsonField('node', JsonString)
 );
 
 describe('Outgoing Schema 3', function() {
@@ -98,7 +100,7 @@ describe('Outgoing Schema 3', function() {
 
 const schema4 = JsonObject(
     JsonField('name', JsonString),
-    JsonField('spec', JsonStringMap),
+    JsonField('spec', JsonStringMap)
 );
 
 describe('Outgoing Schema 4 StringMap', function() {
@@ -139,7 +141,7 @@ const schema6 = JsonObject(
     JsonField('f2', JsonAny),
     JsonField('f3', JsonAny),
     JsonField('f4', JsonAny),
-    JsonField('f5', JsonAny),
+    JsonField('f5', JsonAny)
 );
 
 describe('Outgoing Schema 6', function() {
