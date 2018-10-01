@@ -7,7 +7,7 @@ function convertToInteger(s){
 }
 
 function findField(schemaObject, fieldName){
-    for (field of schemaObject.fields){
+    for (const field of schemaObject.fields){
         if (field.name === fieldName){
             return field;
         }
@@ -21,7 +21,7 @@ function getObjectField(schemaObj, obj, name){
         throw new Error('Unrecognized field: ' + name);
     }
     if (obj[name] === undefined || obj[name] === null){
-        throw null;
+        throw obj[name];
     }
     return [field.fieldType, obj[name]];
 }

@@ -48,18 +48,18 @@ describe('Schema 1 proxy getter', function () {
         assert.throws(() => proxy.nod.$get(), Error, "Unrecognized field: nod");
     });
 
-    it('Should return null if the value is missing schema first level', function () {
+    it('Should return undefined if the value is missing schema first level', function () {
         const data = {tag: {name: 'abc', level: 10}};
         const proxy = schemaProxy.createProxy(data, schema1);
         const actual = proxy.node.$get();
-        assert.isNull(actual);
+        assert.isUndefined(actual);
     });
 
-    it('Should return null if the object is missing schema first level', function () {
+    it('Should return undefined if the object is missing schema first level', function () {
         const data = {node: '5'};
         const proxy = schemaProxy.createProxy(data, schema1);
         const actual = proxy.tag.$get();
-        assert.isNull(actual);
+        assert.isUndefined(actual);
     });
 
     it('Should return value in the second level', function () {
@@ -88,18 +88,18 @@ describe('Schema 1 proxy getter', function () {
         assert.throws(() => proxy.nod.node.$get(), Error, "Unrecognized field: nod");
     });
 
-    it('Should return null if the value is missing schema second level', function () {
+    it('Should return undefined if the value is missing schema second level', function () {
         const data = {tag: {name: 'abc'}};
         const proxy = schemaProxy.createProxy(data, schema1);
         const actual = proxy.tag.level.$get();
-        assert.isNull(actual);
+        assert.isUndefined(actual);
     });
 
     it('Should return null if the object is missing schema second level', function () {
         const data = {node: '5'};
         const proxy = schemaProxy.createProxy(data, schema1);
         const actual = proxy.tag.cascade.$get();
-        assert.isNull(actual);
+        assert.isUndefined(actual);
     });
 
     it('Should return value in the array', function () {
