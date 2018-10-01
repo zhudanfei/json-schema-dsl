@@ -8,7 +8,7 @@ function checkObjectType(inputObject, path) {
 }
 
 function validateOutgoingObject(inputObject, path, fieldNameSet) {
-    if (inputObject === null) {
+    if (inputObject === undefined || inputObject === null) {
         return;
     }
     checkObjectType(inputObject, path);
@@ -26,7 +26,7 @@ function getFieldResult(inputObject, path, result) {
         if (fieldName in inputObject) {
             result[fieldName] = processField(field, path, inputObject[fieldName]);
         } else {
-            result[fieldName] = processField(field, path, null);
+            result[fieldName] = processField(field, path, undefined);
         }
     }
 }
@@ -41,8 +41,8 @@ function convertObject(schema, inputObject, path) {
     path = path || [];
     const fieldNameSet = new Set(schema.fields.map(field => field.name));
     validateOutgoingObject(inputObject, path, fieldNameSet);
-    if (inputObject === null) {
-        return null;
+    if (inputObject === undefined || inputObject === null) {
+        return inputObject;
     }
     return collectObjectResult(inputObject, path, schema.fields);
 }
@@ -54,7 +54,7 @@ function checkArrayType (inputObject, path) {
 }
 
 function validateArray(inputObject, path) {
-    if (inputObject === null){
+    if (inputObject === undefined || inputObject === null){
         return;
     }
     checkArrayType(inputObject, path);
@@ -77,8 +77,8 @@ function collectArrayResult(inputObject, path, elementType, filters){
 function convertArray(schema, inputObject, path){
     path = path || [];
     validateArray(inputObject, path);
-    if (inputObject === null){
-        return null;
+    if (inputObject === undefined || inputObject === null){
+        return inputObject;
     }
     return collectArrayResult(inputObject, path, schema.elementType, schema.filters);
 }
