@@ -23,7 +23,7 @@ const schema1 = JsonObject(
 describe('Outgoing Schema 1', function(){
     it('Should throw error when get an integer value in string field', function() {
         const data = {node: 5};
-        assert.throws(() => jsonOutgoing.convert(schema1, data), Error, "node: Should be a string");
+        assert.throws(() => jsonOutgoing.convert(schema1, data, null), Error, "node: Should be a string");
     });
 
     it('Should return array', function() {
@@ -55,6 +55,11 @@ describe('Outgoing Schema 1', function(){
         const expected = {node:undefined, user:undefined, tag:undefined, event:[{name: 'abc', alarm:undefined}, {name:undefined, alarm: false}]};
         const actual = jsonOutgoing.convert(schema1, data);
         assert.deepEqual(actual, expected);
+    });
+
+    it('Should throw error if an object is in array field', function() {
+        const data = {node: '5', user: {abc: 123}};
+        assert.throws(() => jsonOutgoing.convert(schema1, data), Error, "user: Should be an array");
     });
 
 });
@@ -149,6 +154,19 @@ describe('Outgoing Schema 6', function() {
         const data = {f1:'v1', f2:78, f3:false, f4:{a:5, b:'7'}, f5:['123', 456], f6:'xyz'};
         const expected = {f1:'v1', f2:78, f3:false, f4:{a:5, b:'7'}, f5:['123', 456]};
         const actual = jsonOutgoing.convert(schema6, data);
+        assert.deepEqual(actual, expected);
+    });
+});
+
+const schema7 = JsonArray(JsonObject(
+    JsonField('user', JsonString)
+));
+
+describe('Outgoing Schema 7', function() {
+    it('Should return an array', function () {
+        const data = [{user: 'xyz'}];
+        const expected = [{user: 'xyz'}];
+        const actual = jsonOutgoing.convert(schema7, data, null);
         assert.deepEqual(actual, expected);
     });
 });

@@ -11,7 +11,7 @@ describe('JSON Any Type', function() {
 
 describe('JSON String Type', function(){
     it('String should return undefined if input is undefined', function(){
-        assert.equal(basicType.stringType(undefined, []), undefined)
+        assert.equal(basicType.stringType(undefined), undefined)
     });
     it('String should return null if input is null', function(){
         assert.equal(basicType.stringType(null, []), null)
@@ -40,7 +40,7 @@ describe('JSON String Type', function(){
 
 describe('JSON Integer Type', function(){
     it('Integer should return undefined if input is undefined', function(){
-        assert.equal(basicType.integerType(undefined, []), undefined)
+        assert.equal(basicType.integerType(undefined), undefined)
     });
     it('Integer should return null if input is null', function(){
         assert.equal(basicType.integerType(null, []), null)
@@ -69,7 +69,7 @@ describe('JSON Integer Type', function(){
 
 describe('JSON Number Type', function(){
     it('Number should return undefined if input is undefined', function(){
-        assert.equal(basicType.numberType(undefined, []), undefined)
+        assert.equal(basicType.numberType(undefined), undefined)
     });
     it('Number should return null if input is null', function(){
         assert.equal(basicType.numberType(null, []), null)
@@ -98,7 +98,7 @@ describe('JSON Number Type', function(){
 
 describe('JSON Boolean Type', function(){
     it('Boolean should return undefined if input is undefined', function(){
-        assert.equal(basicType.booleanType(undefined, []), undefined)
+        assert.equal(basicType.booleanType(undefined), undefined)
     });
     it('Boolean should return null if input is null', function(){
         assert.equal(basicType.booleanType(null, []), null)
@@ -127,7 +127,7 @@ describe('JSON Boolean Type', function(){
 
 describe('JSON String Map', function(){
     it('StringMap should return undefined if input is undefined', function(){
-        assert.equal(basicType.stringMap(undefined, []), undefined)
+        assert.equal(basicType.stringMap(undefined), undefined)
     });
     it('StringMap should return null if input is null', function(){
         assert.equal(basicType.stringMap(null, []), null)

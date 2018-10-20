@@ -70,6 +70,11 @@ describe('Incoming Schema 1', function(){
         assert.deepEqual(actual, expected);
     });
 
+    it('Should throw error if an object is in array field', function() {
+        const data = {node: '5', user: {abc: 123}};
+        assert.throws(() => jsonIncoming.convert(schema1, data), Error, "user: Should be an array");
+    });
+
 });
 
 const schema2 = JsonObject(
@@ -109,12 +114,17 @@ describe('Incoming Schema 3', function() {
 
     it('Should support 2 filters', function () {
         const data = {node: 'abcde'};
-        assert.throws(() => jsonIncoming.convert(schema3, data, ROOT), Error, "root.node: String is too long");
+        assert.throws(() => jsonIncoming.convert(schema3, data, null), Error, "String is too long");
     });
 
     it('Should throw error if there is a redundant field', function () {
         const data = {node: 'abcd', xxx:6};
         assert.throws(() => jsonIncoming.convert(schema3, data, ROOT), Error, "root: Unrecognized field: xxx");
+    });
+
+    it('Should throw error if there is two redundant fields', function () {
+        const data = {node: 'abcd', xxx:6, yyy: 11.1};
+        assert.throws(() => jsonIncoming.convert(schema3, data, ROOT), Error, "root: Unrecognized fields: xxx, yyy");
     });
 
 });
@@ -126,7 +136,14 @@ const schema4 = JsonArray(JsonObject(
 describe('Incoming Schema 4', function() {
     it('Should throw error when the length of an item exceed the limit', function () {
         const data = [{arrayOfObject: 'def'}, {arrayOfObject: 'abcde'}];
-        assert.throws(() => jsonIncoming.convert(schema4,data), Error, "1.arrayOfObject: String is too long");
+        assert.throws(() => jsonIncoming.convert(schema4, data), Error, "1.arrayOfObject: String is too long");
+    });
+
+    it('Should return array', function () {
+        const data = [{arrayOfObject: 'def'}, {arrayOfObject: 'abce'}];
+        const expected = [{arrayOfObject: 'def'}, {arrayOfObject: 'abce'}];
+        const actual = jsonIncoming.convert(schema4, data, null);
+        assert.deepEqual(actual, expected);
     });
 
 });

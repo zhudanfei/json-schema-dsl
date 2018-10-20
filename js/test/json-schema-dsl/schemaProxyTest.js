@@ -240,7 +240,6 @@ describe('Schema 1 proxy setter', function () {
     it('Should throw error if index is not an integer', function () {
         const data = {node: '5', user: ['abc', 'xyz']};
         const proxy = schemaProxy.createProxy(data, schema1);
-        proxy.user[1].$set('abc');
         assert.throws(() => proxy.user.x.$set('abc'), Error, 'Index should be integer');
     });
 
@@ -250,6 +249,12 @@ describe('Schema 1 proxy setter', function () {
         const expected = {node: '5', event: [{name: 'abc'}, {name: 'def'}]};
         proxy.event[1].name.$set('def');
         assert.deepEqual(data, expected);
+    });
+
+    it('Should throw error if index is not an integer(array of object)', function () {
+        const data = {node: '5', event: [{name: 'abc'}, {name: 'xyz'}]};
+        const proxy = schemaProxy.createProxy(data, schema1);
+        assert.throws(() => proxy.event.x.name.$set('abc'), Error, 'Index should be integer');
     });
 
     it('Should set value in an empty array of object', function () {
@@ -297,8 +302,7 @@ describe('Schema 1 proxy setter', function () {
     it('Should throw error if path is too long in a string map', function () {
         const data = {node: '5', spec: {def: '1', size: 'xyz'}};
         const proxy = schemaProxy.createProxy(data, schema1);
-        const expected = {node: '5', spec: {def: '1', size: 'abc'}};
-        assert.throws(() => proxy.spec.size.abc.$set('abc')('abc'), Error, "Path is too long");
+        assert.throws(() => proxy.spec.size.abc.$set('abc'), Error, "Path is too long");
     });
 
 });
