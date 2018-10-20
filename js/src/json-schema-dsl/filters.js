@@ -4,11 +4,11 @@ function toDate(value, path){
     if (value === undefined || value === null) {
         return value;
     }
-    try {
-        return new Date(value);
-    } catch (err){
+    const result = new Date(value);
+    if (isNaN(result.getTime())){
         throw new Error(common.getMessage(path, 'Invalid value'));
     }
+    return result;
 }
 
 function toTimestamp(value, path){
@@ -100,8 +100,11 @@ function range(low, high){
     }
 }
 
-function integerToString(i){
-    return i.toString();
+function toString(value){
+    if (value === undefined || value === null) {
+        return value;
+    }
+    return value.toString();
 }
 
 module.exports = {
@@ -113,5 +116,5 @@ module.exports = {
     lengthRange: lengthRange,
     only: only,
     range: range,
-    integerToString: integerToString
+    toString: toString
 };

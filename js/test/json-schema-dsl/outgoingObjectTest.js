@@ -5,7 +5,7 @@ require('../../src/json-schema-dsl/jsonSchemaDSL');
 const filters = require('../../src/json-schema-dsl/filters');
 const jsonOutgoing = require('../../src/json-schema-dsl/jsonOutgoing');
 
-const IntegerToString = filters.integerToString;
+const ToString = filters.toString;
 
 const schema1 = JsonObject(
     JsonField('node', JsonString),
@@ -128,8 +128,8 @@ describe('Outgoing Schema 4 StringMap', function() {
 });
 
 const schema5 = JsonObject(
-    JsonField('object_id', JsonString, IntegerToString),
-    JsonField('userIds', JsonArray(JsonString, IntegerToString))
+    JsonField('object_id', JsonString, ToString),
+    JsonField('userIds', JsonArray(JsonString, ToString))
 );
 
 describe('Outgoing Schema 5', function() {
