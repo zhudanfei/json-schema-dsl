@@ -107,6 +107,19 @@ function toString(value){
     return value.toString();
 }
 
+function pattern(re){
+    return function (value, path){
+        if (value === undefined || value === null) {
+            return value;
+        }
+        const regExp = new RegExp(re);
+        if (value.match(regExp) === null){
+            throw new Error(common.getMessage(path, 'Pattern not match'));
+        }
+        return value;
+    }
+}
+
 module.exports = {
     toTimestamp: toTimestamp,
     notNull: notNull,
@@ -116,5 +129,6 @@ module.exports = {
     lengthRange: lengthRange,
     only: only,
     range: range,
-    toString: toString
+    toString: toString,
+    pattern: pattern
 };

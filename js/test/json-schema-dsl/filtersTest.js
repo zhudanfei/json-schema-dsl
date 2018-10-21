@@ -229,3 +229,27 @@ describe('To String', function() {
 
 });
 
+describe('Pattern', function () {
+    it('Should return undefined if input is undefined', function(){
+        const actual = filters.pattern('^[a-zA-Z0-9]{4}$')(undefined, []);
+        assert.isUndefined(actual);
+    });
+
+    it('Should return null if input is undefined', function(){
+        const actual = filters.pattern('^[a-zA-Z0-9]{4}$')(null, []);
+        assert.isNull(actual);
+    });
+
+    it('Should throw error if pattern not match', function(){
+        const value = 'abcde';
+        assert.throws(() => filters.pattern('^[a-zA-Z0-9]{4}$')(value, ['root']), Error, "root: Pattern not match");
+    });
+
+    it('Should return value if value is in the set', function(){
+        const value = 'user';
+        const actual = filters.pattern('^[a-zA-Z0-9]{4}$')(value);
+        assert.equal(actual, value);
+    });
+
+});
+

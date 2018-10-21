@@ -103,6 +103,17 @@ function convertArray(schema, inputObject, path){
     return collectArrayResult(inputObject, path, schema.elementType, schema.filters);
 }
 
+function convertEither(schema, inputObject, path){
+    for (let i = 0; i < schema.types.length; i++){
+        try {
+            return convert(schema.types[i], inputObject, path);
+        } catch(err){
+
+        }
+    }
+    throw new Error(common.getMessage(path, 'Invalid value'));
+}
+
 function schemaWrap(converter){
     return function(schema, inputObject, path){
         return converter(inputObject, path);
@@ -116,7 +127,8 @@ const typeFunctionMap = {
     Boolean: schemaWrap(basicType.booleanType),
     StringMap: schemaWrap(basicType.stringMap),
     Object: convertObject,
-    Array: convertArray
+    Array: convertArray,
+    Either: convertEither
 };
 
 function convert(schema, inputObject, path = []){
