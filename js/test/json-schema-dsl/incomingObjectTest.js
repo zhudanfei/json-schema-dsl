@@ -2,13 +2,14 @@ const assert = require('chai').assert;
 const expect = require('chai').expect;
 
 require('../../src/json-schema-dsl/jsonSchemaDSL');
+const validations = require('../../src/json-schema-dsl/validations');
 const filters = require('../../src/json-schema-dsl/filters');
 const jsonIncoming = require('../../src/json-schema-dsl/jsonIncoming');
 
-const MaxLength = filters.maxLength;
-const MinLength = filters.minLength;
-const Range = filters.range;
-const NotNull = filters.notNull;
+const MaxLength = validations.maxLength;
+const MinLength = validations.minLength;
+const Range = validations.range;
+const NotNull = validations.notNull;
 const ToString = filters.toString;
 
 const ROOT = ['root'];
