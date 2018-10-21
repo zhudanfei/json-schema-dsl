@@ -87,12 +87,36 @@ function pattern(re){
     }
 }
 
+function MaxLength(length){
+    return {type: 'validation', name: 'MaxLength', action: maxLength(length)};
+}
+
+function MinLength(length){
+    return {type: 'validation', name: 'MinLength', action: minLength(length)};
+}
+
+function LengthRange(low, high){
+    return {type: 'validation', name: 'LengthRange', action: lengthRange(low, high)};
+}
+
+function Only(...options){
+    return {type: 'validation', name: 'Only', action: only(...options)};
+}
+
+function Range(low, high){
+    return {type: 'validation', name: 'Range', action: range(low, high)};
+}
+
+function Pattern(re){
+    return {type: 'validation', name: 'Pattern', action: pattern(re)};
+}
+
 module.exports = {
-    notNull: notNull,
-    maxLength: maxLength,
-    minLength: minLength,
-    lengthRange: lengthRange,
-    only: only,
-    range: range,
-    pattern: pattern
+    NotNull: {type: 'validation', name: 'NotNull', action: notNull},
+    MaxLength: MaxLength,
+    MinLength: MinLength,
+    LengthRange: LengthRange,
+    Only: Only,
+    Range: Range,
+    Pattern: Pattern
 };

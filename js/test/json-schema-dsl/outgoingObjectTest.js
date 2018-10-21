@@ -5,7 +5,7 @@ require('../../src/json-schema-dsl/jsonSchemaDSL');
 const filters = require('../../src/json-schema-dsl/filters');
 const jsonOutgoing = require('../../src/json-schema-dsl/jsonOutgoing');
 
-const ToString = filters.toString;
+const ToString = filters.ToString;
 
 const schema1 = JsonObject(
     JsonField('node', JsonString),

@@ -37,7 +37,7 @@ function validateIncomingObject(inputObject, path, fieldNameSet) {
 function processField(field, parent, inputObject){
     const path = parent.concat([field.name]);
     const result = convert(field.fieldType, inputObject, path);
-    return field.filters.reduce((result, filter) => filter(result, path), result);
+    return field.filters.reduce((result, filter) => filter.action(result, path), result);
 }
 
 function getFieldResult(inputObject, path, result) {
@@ -82,7 +82,7 @@ function validateArray(inputObject, path) {
 
 function filterArrayElement(inputObject, path, elementType, filters){
     const result = convert(elementType, inputObject, path);
-    return filters.reduce((result, filter) => filter(result, path), result);
+    return filters.reduce((result, filter) => filter.action(result, path), result);
 }
 
 function collectArrayResult(inputObject, path, elementType, filters){

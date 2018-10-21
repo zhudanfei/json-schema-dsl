@@ -6,11 +6,11 @@ const validations = require('../../src/json-schema-dsl/validations');
 const filters = require('../../src/json-schema-dsl/filters');
 const jsonIncoming = require('../../src/json-schema-dsl/jsonIncoming');
 
-const MaxLength = validations.maxLength;
-const MinLength = validations.minLength;
-const Range = validations.range;
-const NotNull = validations.notNull;
-const ToString = filters.toString;
+const MaxLength = validations.MaxLength;
+const MinLength = validations.MinLength;
+const Range = validations.Range;
+const NotNull = validations.NotNull;
+const ToString = filters.ToString;
 
 const ROOT = ['root'];
 
