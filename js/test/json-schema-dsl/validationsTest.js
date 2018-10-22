@@ -20,6 +20,27 @@ describe('Not Null', function() {
 
 });
 
+describe('Not Empty', function() {
+    it('Should throw error if input is undefined', function(){
+        assert.throws(() => validations.NotEmpty.action(undefined, []), Error, "Cannot be null");
+    });
+
+    it('Should throw error if input is null', function(){
+        assert.throws(() => validations.NotEmpty.action(null, ['node']), Error, "node: Cannot be null");
+    });
+
+    it('Should throw error if input is empty', function(){
+        assert.throws(() => validations.NotEmpty.action('', ['node']), Error, "node: Cannot be empty");
+    });
+
+    it('Should return value if input has value', function(){
+        const value = {user: 'abc'};
+        const actual = validations.NotEmpty.action(value, []);
+        assert.deepEqual(actual, value);
+    });
+
+});
+
 describe('Max Length', function () {
     it('Should return undefined if input is undefined', function(){
         const actual = validations.MaxLength(4).action(undefined, []);

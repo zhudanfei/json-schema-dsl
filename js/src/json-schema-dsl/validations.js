@@ -7,6 +7,16 @@ function notNull(value, path){
     return value;
 }
 
+function notEmpty(value, path){
+    if (value === undefined || value === null){
+        throw new Error(common.getMessage(path, 'Cannot be null'));
+    }
+    if (value.length === 0){
+        throw new Error(common.getMessage(path, 'Cannot be empty'));
+    }
+    return value;
+}
+
 function maxLength(length){
     return function (value, path){
         if (value === undefined || value === null) {
@@ -113,6 +123,7 @@ function Pattern(re){
 
 module.exports = {
     NotNull: {type: 'validation', name: 'NotNull', action: notNull},
+    NotEmpty: {type: 'validation', name: 'NotEmpty', action: notEmpty},
     MaxLength: MaxLength,
     MinLength: MinLength,
     LengthRange: LengthRange,
