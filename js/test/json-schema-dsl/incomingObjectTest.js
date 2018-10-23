@@ -220,10 +220,10 @@ describe('Incoming Schema 7', function () {
 const schema8 = JsonObject(
     JsonField('credential', JsonEither(JsonObject(
             JsonField('userId', JsonInteger),
-            JsonField('password', JsonString, MinLength(4)),
+            JsonField('password', JsonString, MinLength(4))
         ), JsonString, JsonObject(
         JsonField('email', JsonString),
-        JsonField('passphrase', JsonString, MinLength(5)),
+        JsonField('passphrase', JsonString, MinLength(5))
         ))
     )
 );
