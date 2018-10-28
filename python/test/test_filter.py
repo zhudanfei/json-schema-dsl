@@ -4,34 +4,63 @@ import unittest
 import filters
 
 
-class TestFilter(unittest.TestCase):
+class TestDateTime(unittest.TestCase):
 
-    def test_timestamp(self):
+    def test_none(self):
+        actual = filters.ToTimestamp(None, [])
+        self.assertIsNone(actual)
+
+    def test_short_iso(self):
         value = '1970-01-02T00:00:00.000Z'
-        timestamp = filters.to_timestamp(value, '')
-        self.assertEqual(24 * 3600 * 1000, timestamp)
+        actual = filters.ToTimestamp(value, [])
+        self.assertEqual(24 * 3600 * 1000, actual)
 
-    def test_timestamp_long(self):
+    def test_long_iso(self):
         value = '1970-01-02T00:00:00.000000Z'
-        timestamp = filters.to_timestamp(value, '')
-        self.assertEqual(24 * 3600 * 1000, timestamp)
+        actual = filters.ToTimestamp(value, [])
+        self.assertEqual(24 * 3600 * 1000, actual)
 
-    def test_max_length(self):
-        f = filters.max_length(4)
-        value = 'abcde'
-        with self.assertRaises(ValueError) as context:
-            f(value, '')
+    def test_invalid_format(self):
+        value = '197001-02T00:00:00.000000Z'
+        try:
+            filters.ToTimestamp(value, ['ROOT'])
+            self.assertTrue(False)
+        except ValueError as ex:
+            self.assertEqual('ROOT: Invalid value', ex.message)
 
-    def test_max_length_unicode_pass(self):
-        f = filters.max_length(4)
-        value = u'太空旅客'
-        self.assertEqual(value, f(value, ''))
 
-    def test_max_length_unicode_fail(self):
-        f = filters.max_length(4)
-        value = u'血战钢锯岭'
-        with self.assertRaises(ValueError) as context:
-            f(value, '')
+class TestTrim(unittest.TestCase):
+
+    def test_none(self):
+        actual = filters.Trim(None, [])
+        self.assertIsNone(actual)
+
+    def test_trim(self):
+        value = ' \t\nabc\t\n '
+        actual = filters.Trim(value, [])
+        self.assertEqual('abc', actual)
+
+
+class TestToString(unittest.TestCase):
+
+    def test_none(self):
+        actual = filters.ToString(None, [])
+        self.assertIsNone(actual)
+
+    def test_string(self):
+        value = 'abc'
+        actual = filters.ToString(value, [])
+        self.assertEqual('abc', actual)
+
+    def test_integer(self):
+        value = 56
+        actual = filters.ToString(value, [])
+        self.assertEqual('56', actual)
+
+    def test_float(self):
+        value = 56.37
+        actual = filters.ToString(value, [])
+        self.assertEqual('56.37', actual)
 
 
 if __name__ == '__main__':

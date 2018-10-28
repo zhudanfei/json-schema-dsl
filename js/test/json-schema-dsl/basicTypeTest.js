@@ -62,7 +62,7 @@ describe('JSON Integer Type', function(){
         assert.throws(() => basicType.integerType(obj, ['node', '3']), Error, "node.3: Should be an integer")
     });
     it('Integer should throw error if input is an array', function(){
-        const arr = [1,3,5];
+        const arr = [1, 3, 5];
         assert.throws(() => basicType.integerType(arr, ['node']), Error, "node: Should be an integer")
     });
 });
@@ -91,7 +91,7 @@ describe('JSON Number Type', function(){
         assert.throws(() => basicType.numberType(obj, ['node', '3']), Error, "node.3: Should be a number")
     });
     it('Number should throw error if input is an array', function(){
-        const arr = [1,3,5];
+        const arr = [1, 3, 5];
         assert.throws(() => basicType.numberType(arr, ['node']), Error, "node: Should be a number")
     });
 });
@@ -120,7 +120,7 @@ describe('JSON Boolean Type', function(){
         assert.throws(() => basicType.booleanType(obj, ['node', '3']), Error, "node.3: Should be a boolean")
     });
     it('Boolean should throw error if input is an array', function(){
-        const arr = [1,3,5];
+        const arr = [1, 3, 5];
         assert.throws(() => basicType.booleanType(arr, ['node']), Error, "node: Should be a boolean")
     });
 });

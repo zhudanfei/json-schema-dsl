@@ -34,7 +34,7 @@ function toString(value){
 }
 
 module.exports = {
-    ToTimestamp: {type: 'filter', name: 'toTimestamp', action: toTimestamp},
+    ToTimestamp: {type: 'filter', name: 'ToTimestamp', action: toTimestamp},
     Trim: {type: 'filter', name: 'Trim', action: trim},
     ToString: {type: 'filter', name: 'ToString', action: toString}
 };

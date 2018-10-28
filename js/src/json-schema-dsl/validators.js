@@ -85,11 +85,11 @@ function range(low, high){
 }
 
 function pattern(re){
+    const regExp = new RegExp(re);
     return function (value, path){
         if (value === undefined || value === null) {
             return value;
         }
-        const regExp = new RegExp(re);
         if (value.match(regExp) === null){
             throw new Error(common.getMessage(path, 'Pattern not match'));
         }
@@ -98,32 +98,32 @@ function pattern(re){
 }
 
 function MaxLength(length){
-    return {type: 'validation', name: 'MaxLength', action: maxLength(length)};
+    return {type: 'validator', name: 'MaxLength', action: maxLength(length)};
 }
 
 function MinLength(length){
-    return {type: 'validation', name: 'MinLength', action: minLength(length)};
+    return {type: 'validator', name: 'MinLength', action: minLength(length)};
 }
 
 function LengthRange(low, high){
-    return {type: 'validation', name: 'LengthRange', action: lengthRange(low, high)};
+    return {type: 'validator', name: 'LengthRange', action: lengthRange(low, high)};
 }
 
 function Only(...options){
-    return {type: 'validation', name: 'Only', action: only(...options)};
+    return {type: 'validator', name: 'Only', action: only(...options)};
 }
 
 function Range(low, high){
-    return {type: 'validation', name: 'Range', action: range(low, high)};
+    return {type: 'validator', name: 'Range', action: range(low, high)};
 }
 
 function Pattern(re){
-    return {type: 'validation', name: 'Pattern', action: pattern(re)};
+    return {type: 'validator', name: 'Pattern', action: pattern(re)};
 }
 
 module.exports = {
-    NotNull: {type: 'validation', name: 'NotNull', action: notNull},
-    NotEmpty: {type: 'validation', name: 'NotEmpty', action: notEmpty},
+    NotNull: {type: 'validator', name: 'NotNull', action: notNull},
+    NotEmpty: {type: 'validator', name: 'NotEmpty', action: notEmpty},
     MaxLength: MaxLength,
     MinLength: MinLength,
     LengthRange: LengthRange,

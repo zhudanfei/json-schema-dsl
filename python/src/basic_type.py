@@ -55,5 +55,3 @@ def string_map(value, path):
         return None
     _validate_string_map(value, path)
     return value
-
-

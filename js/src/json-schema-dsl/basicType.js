@@ -55,7 +55,7 @@ function validateStringMap(value, path){
     for (let prop in value){
         if (value.hasOwnProperty(prop)){
             if (!common.isString(value[prop])){
-                let ext_path = path.concat([prop]);
+                const ext_path = path.concat([prop]);
                 throw new Error(common.getMessage(ext_path, 'Should be a string'));
             }
         }
