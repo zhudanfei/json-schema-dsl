@@ -26,7 +26,9 @@ def _collect_object_result(input_object, path, fields):
         if field_name in input_object:
             result[field_name] = _process_field(field, path, input_object[field_name])
         else:
-            result[field_name] = _process_field(field, path, None)
+            field_result = _process_field(field, path, None)
+            if field_result is not None:
+                result[field_name] = field_result
     return result
 
 

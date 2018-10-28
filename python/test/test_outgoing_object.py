@@ -31,10 +31,7 @@ class TestSchema1(unittest.TestCase):
 
     def test_return_array(self):
         data = {'user': ['abc', 'def', 'xxxxxx']}
-        expected = {'node': None,
-                    'user': ['abc', 'def', 'xxxxxx'],
-                    'tag': None,
-                    'event': None}
+        expected = {'user': ['abc', 'def', 'xxxxxx']}
         result = json_outgoing.convert(schema1, data)
         self.assertEqual(expected, result)
 
@@ -56,19 +53,13 @@ class TestSchema1(unittest.TestCase):
 
     def test_return_object(self):
         data = {'tag': {'name': 'abc'}}
-        expected = {'node': None,
-                    'user': None,
-                    'tag': {'name': 'abc', 'level': None},
-                    'event': None}
+        expected = {'tag': {'name': 'abc'}}
         result = json_outgoing.convert(schema1, data)
         self.assertEqual(expected, result)
 
     def test_return_array_of_object(self):
         data = {'event': [{'name': 'abc'}, {'alarm': False}]}
-        expected = {'node': None,
-                    'user': None,
-                    'tag': None,
-                    'event': [{'name': 'abc', 'alarm': None}, {'name': None, 'alarm': False}]}
+        expected = {'event': [{'name': 'abc'}, {'alarm': False}]}
         result = json_outgoing.convert(schema1, data)
         self.assertEqual(expected, result)
 
