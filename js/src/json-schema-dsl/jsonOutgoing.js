@@ -7,7 +7,7 @@ function checkObjectType(inputObject, path) {
     }
 }
 
-function validateOutgoingObject(inputObject, path, fieldNameSet) {
+function validateOutgoingObject(inputObject, path) {
     if (inputObject === undefined || inputObject === null) {
         return;
     }
@@ -39,8 +39,7 @@ function collectObjectResult(inputObject, path, fields) {
 
 function convertObject(schema, inputObject, path) {
     path = path || [];
-    const fieldNameSet = new Set(schema.fields.map(field => field.name));
-    validateOutgoingObject(inputObject, path, fieldNameSet);
+    validateOutgoingObject(inputObject, path);
     if (inputObject === undefined || inputObject === null) {
         return inputObject;
     }

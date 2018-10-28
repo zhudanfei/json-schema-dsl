@@ -7,7 +7,7 @@ def _check_object_type(input_object, path):
         raise TypeError(get_message(path, 'Should be an object'))
 
 
-def _validate_outgoing_object(input_object, path, field_name_set):
+def _validate_outgoing_object(input_object, path):
     if input_object is None:
         return None
     _check_object_type(input_object, path)
@@ -32,8 +32,7 @@ def _collect_object_result(input_object, path, fields):
 
 def _convert_object(schema, input_object, path):
     path = path or []
-    field_name_set = set([x['name'] for x in schema['fields']])
-    _validate_outgoing_object(input_object, path, field_name_set)
+    _validate_outgoing_object(input_object, path)
     if input_object is None:
         return None
     return _collect_object_result(input_object, path, schema['fields'])
