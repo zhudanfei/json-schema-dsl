@@ -28,7 +28,7 @@ describe('Outgoing Schema 1', function(){
 
     it('Should return array', function() {
         const data = {'user': ['abc', 'def', 'xxxxxx']};
-        const expected = {node:undefined, user:['abc', 'def', 'xxxxxx'], tag:undefined, event:undefined};
+        const expected = {user:['abc', 'def', 'xxxxxx']};
         const actual = jsonOutgoing.convert(schema1, data);
         assert.deepEqual(actual, expected);
     });
@@ -45,14 +45,14 @@ describe('Outgoing Schema 1', function(){
 
     it('Should return object', function() {
         const data =  {tag: {name: 'abc'}};
-        const expected = {node:undefined, user:undefined, tag:{name: 'abc', level:undefined}, event:undefined};
+        const expected = {tag:{name: 'abc'}};
         const actual = jsonOutgoing.convert(schema1, data);
         assert.deepEqual(actual, expected);
     });
 
     it('Should return array of object', function() {
         const data =  {event: [{name: 'abc'}, {alarm: false}]};
-        const expected = {node:undefined, user:undefined, tag:undefined, event:[{name: 'abc', alarm:undefined}, {name:undefined, alarm: false}]};
+        const expected = {event:[{name: 'abc'}, {alarm: false}]};
         const actual = jsonOutgoing.convert(schema1, data);
         assert.deepEqual(actual, expected);
     });

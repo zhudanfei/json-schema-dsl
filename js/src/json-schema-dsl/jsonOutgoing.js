@@ -23,10 +23,14 @@ function processField(field, parent, inputObject){
 function getFieldResult(inputObject, path, result) {
     return function (field) {
         const fieldName = field.name;
+        let fieldResult;
         if (fieldName in inputObject) {
-            result[fieldName] = processField(field, path, inputObject[fieldName]);
+            fieldResult = processField(field, path, inputObject[fieldName]);
         } else {
-            result[fieldName] = processField(field, path, undefined);
+            fieldResult = processField(field, path, undefined);
+        }
+        if (fieldResult !== undefined) {
+            result[fieldName] = fieldResult;
         }
     }
 }
