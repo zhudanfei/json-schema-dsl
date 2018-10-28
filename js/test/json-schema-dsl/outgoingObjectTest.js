@@ -104,24 +104,24 @@ describe('Outgoing Schema 3', function() {
 });
 
 const schema4 = JsonObject(
-    JsonField('name', JsonString),
+    JsonField('name', JsonNumber),
     JsonField('spec', JsonStringMap)
 );
 
 describe('Outgoing Schema 4 StringMap', function() {
     it('Should throw error when the type is not object', function() {
-        const data = {name:'abc', spec:'def'};
+        const data = {name:1.99, spec:'def'};
         assert.throws(() => jsonOutgoing.convert(schema4, data), Error, "spec: Should be an object");
     });
 
     it('Should throw error when the element type is not string', function () {
-        const data = {name:'abc', spec:{def:1, size:'xyz'}};
+        const data = {name:1.99, spec:{def:1, size:'xyz'}};
         assert.throws(() => jsonOutgoing.convert(schema4, data), Error, "spec.def: Should be a string");
     });
 
     it('Should return string map', function () {
-        const data = {name:'abc', spec:{def:'1', size:'xyz'}};
-        const expected = {name:'abc', spec:{def:'1', size:'xyz'}};
+        const data = {name:1.99, spec:{def:'1', size:'xyz'}};
+        const expected = {name:1.99, spec:{def:'1', size:'xyz'}};
         const actual = jsonOutgoing.convert(schema4, data);
         assert.deepEqual(actual, expected);
     });
