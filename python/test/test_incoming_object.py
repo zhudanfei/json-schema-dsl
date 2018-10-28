@@ -2,18 +2,18 @@
 
 import unittest
 from json_schema_dsl import *
-from filters import *
+from validators import *
 import json_incoming
 
 ROOT = ['root']
 
 schema1 = JsonObject(
-    JsonField('node', JsonString, max_length(6)),
-    JsonField('user', JsonArray(JsonString, max_length(6))),
-    JsonField('tag', JsonObject(JsonField('name', JsonString, max_length(4)),
-                        JsonField('level', JsonInteger, range(0, 3)),
+    JsonField('node', JsonString, MaxLength(6)),
+    JsonField('user', JsonArray(JsonString, MaxLength(6))),
+    JsonField('tag', JsonObject(JsonField('name', JsonString, MaxLength(4)),
+                        JsonField('level', JsonInteger, Range(0, 3)),
                         )),
-    JsonField('event', JsonArray(JsonObject(JsonField('name', JsonString, max_length(3)),
+    JsonField('event', JsonArray(JsonObject(JsonField('name', JsonString, MaxLength(3)),
                                 JsonField('alarm', JsonBoolean)
                                 )))
 )
@@ -89,10 +89,10 @@ class TestSchema1(unittest.TestCase):
 
 
 schema2 = JsonObject(
-    JsonField('node', JsonString, max_length(4)),
-    JsonField('user', JsonArray(JsonString, max_length(6))),
-    JsonField('tag', JsonObject(JsonField('name', JsonString, max_length(4)),
-                        JsonField('level', JsonInteger, range(0, 3)),
+    JsonField('node', JsonString, MaxLength(4)),
+    JsonField('user', JsonArray(JsonString, MaxLength(6))),
+    JsonField('tag', JsonObject(JsonField('name', JsonString, MaxLength(4)),
+                        JsonField('level', JsonInteger, Range(0, 3)),
                         )),
 )
 
@@ -141,7 +141,7 @@ class TestSchema3(unittest.TestCase):
 
 
 schema4 = JsonArray(JsonObject(
-    JsonField('arrayOfObject', JsonString, not_null, max_length(4)),
+    JsonField('arrayOfObject', JsonString, not_null, MaxLength(4)),
 ))
 
 
