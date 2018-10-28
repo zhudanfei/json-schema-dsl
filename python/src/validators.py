@@ -2,13 +2,13 @@ import re
 from schema_dsl_common import *
 
 
-def not_null(value, path):
+def _not_null(value, path):
     if value is None:
         raise ValueError(get_message(path, 'Cannot be null'))
     return value
 
 
-def not_empty(value, path):
+def _not_empty(value, path):
     if value is None:
         raise ValueError(get_message(path, 'Cannot be null'))
     if value == '':
@@ -16,7 +16,7 @@ def not_empty(value, path):
     return value
 
 
-def max_length(length):
+def _max_length(length):
     def f(value, path):
         if value is None:
             return None
@@ -27,7 +27,7 @@ def max_length(length):
     return f
 
 
-def min_length(length):
+def _min_length(length):
     def f(value, path):
         if value is None:
             return None
@@ -38,7 +38,7 @@ def min_length(length):
     return f
 
 
-def length_range(low, high):
+def _length_range(low, high):
     def f(value, path):
         if value is None:
             return None
@@ -51,7 +51,7 @@ def length_range(low, high):
     return f
 
 
-def only(*options):
+def _only(*options):
     option_set = set(options)
 
     def f(value, path):
@@ -77,7 +77,7 @@ def _range(low, high):
     return f
 
 
-def pattern(_pattern):
+def _pattern(_pattern):
     re_obj = re.compile(_pattern)
 
     def f(value, path):
@@ -90,24 +90,24 @@ def pattern(_pattern):
     return f
 
 
-NotNull = SchemaFilter('validator', 'NotNull', not_null)
-NotEmpty = SchemaFilter('validator', 'NotEmpty', not_empty)
+NotNull = SchemaFilter('validator', 'NotNull', _not_null)
+NotEmpty = SchemaFilter('validator', 'NotEmpty', _not_empty)
 
 
 def MaxLength(length):
-    return SchemaFilter('validator', 'MaxLength', max_length(length))
+    return SchemaFilter('validator', 'MaxLength', _max_length(length))
 
 
 def MinLength(length):
-    return SchemaFilter('validator', 'MinLength', min_length(length))
+    return SchemaFilter('validator', 'MinLength', _min_length(length))
 
 
 def LengthRange(low, high):
-    return SchemaFilter('validator', 'LengthRange', length_range(low, high))
+    return SchemaFilter('validator', 'LengthRange', _length_range(low, high))
 
 
 def Only(*options):
-    return SchemaFilter('validator', 'Only', only(*options))
+    return SchemaFilter('validator', 'Only', _only(*options))
 
 
 def Range(low, high):
@@ -115,6 +115,6 @@ def Range(low, high):
 
 
 def Pattern(re):
-    return SchemaFilter('validator', 'Pattern', pattern(re))
+    return SchemaFilter('validator', 'Pattern', _pattern(re))
 
 

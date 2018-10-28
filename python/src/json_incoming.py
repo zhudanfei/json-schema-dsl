@@ -2,16 +2,16 @@ import basic_type
 from schema_dsl_common import *
 
 
+def _check_object_type(input_object, path):
+    if not isinstance(input_object, dict):
+        raise TypeError(get_message(path, 'Should be an object'))
+
+
 def _get_unrecognized_message(diff_set):
     diff = list(diff_set)
     if len(diff) == 1:
         return 'Unrecognized field: ' + diff[0]
     return 'Unrecognized fields: ' + ', '.join([x for x in diff])
-
-
-def _check_object_type(input_object, path):
-    if not isinstance(input_object, dict):
-        raise TypeError(get_message(path, 'Should be an object'))
 
 
 def _check_redundancy(input_object, path, field_name_set):
@@ -71,7 +71,8 @@ def _filter_array_element(input_object, path, element_type, filters):
 
 
 def _collect_array_result(input_object, path, element_type, filters):
-    return [_filter_array_element(input_object[i], path + [str(i)], element_type, filters) for i in xrange(len(input_object))]
+    return [_filter_array_element(input_object[i], path + [str(i)], element_type, filters) for i in
+            xrange(len(input_object))]
 
 
 def _convert_array(schema, input_object, path):
@@ -82,9 +83,21 @@ def _convert_array(schema, input_object, path):
     return _collect_array_result(input_object, path, schema['element_type'], schema['filters'])
 
 
+def _convert_either(schema, input_object, path):
+    for data_type in schema['types']:
+        try:
+            return convert(data_type, input_object, path)
+        except ValueError:
+            pass
+        except TypeError:
+            pass
+    raise ValueError(get_message(path, 'Invalid value'))
+
+
 def _schema_wrap(converter):
     def f(schema, input_object, path):
         return converter(input_object, path)
+
     return f
 
 
@@ -95,7 +108,8 @@ TYPE_FUNCTION_MAP = {
     'Boolean': _schema_wrap(basic_type.boolean_type),
     'StringMap': _schema_wrap(basic_type.string_map),
     'Object': _convert_object,
-    'Array': _convert_array
+    'Array': _convert_array,
+    'Either': _convert_either
 }
 
 

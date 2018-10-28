@@ -17,3 +17,6 @@ def JsonObject(*fields):
 def JsonArray(element_type, *filters):
     return {'type': 'Array', 'element_type': element_type, 'filters': filters}
 
+
+def JsonEither(*types):
+    return {'type': 'Either', 'types': types}
