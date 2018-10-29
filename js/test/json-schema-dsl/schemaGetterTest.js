@@ -86,7 +86,7 @@ describe('Schema 1 getter', function () {
     });
 
     it('Should return undefined if the object is missing schema second level', function () {
-        const data = {node: '5'};
+        const data = {tag: {name: 'abc'}};
         const actual = schemaGetter(schema1, ['tag', 'cascade'], data);
         assert.isUndefined(actual);
     });
