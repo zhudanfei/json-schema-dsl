@@ -26,6 +26,13 @@ const schema1 = JsonObject(
 );
 
 describe('Schema 1 getter', function () {
+    it('Should return value if path is empty', function () {
+        const data = {node: '5', tag: {name: 'abc', level: 10}};
+        const expected = {node: '5', tag: {name: 'abc', level: 10}};
+        const actual = schemaGetter(schema1, [], data);
+        assert.deepEqual(actual, expected);
+    });
+
     it('Should return value in the first level', function () {
         const data = {node: '5'};
         const expected = '5';

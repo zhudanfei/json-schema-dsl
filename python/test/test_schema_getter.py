@@ -29,6 +29,12 @@ schema1 = JsonObject(
 
 class TestSchemaGetter(unittest.TestCase):
 
+    def test_whole_object(self):
+        data = {'node': '5', 'tag': {'name': 'abc', 'level': 10}}
+        expected = {'node': '5', 'tag': {'name': 'abc', 'level': 10}}
+        actual = schema_getter.getter(schema1, [], data)
+        self.assertEqual(expected, actual)
+
     def test_first_level_value(self):
         data = {'node': '5'}
         expected = '5'
