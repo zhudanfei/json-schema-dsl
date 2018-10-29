@@ -18,3 +18,12 @@ class SchemaFilter:
 
     def __call__(self, *args):
         return self.action(*args)
+
+
+def find_field(schema_object, field_name):
+    for field in schema_object['fields']:
+        if field['name'] == field_name:
+            return field
+    return None
+
+

@@ -117,11 +117,6 @@ describe('Schema 1 setter', function () {
         assert.deepEqual(data, expected);
     });
 
-    it('Should throw error if index is not an integer in an array of object', function () {
-        const data = {node: '5', event: [{name: 'abc'}, {name: 'xyz'}]};
-        assert.throws(() => schemaSetter(schema1, ['event', 'x'], data, 'abc'), Error, 'Index should be integer');
-    });
-
     it('Should throw error if path is longer', function () {
         const data = {node: '5', event: [{name: 'abc'}, {name: 'xyz'}]};
         assert.throws(() => schemaSetter(schema1, ['event', '0', 'name', 'abc'], data, 'abc'), Error, "Path is too long");
@@ -143,6 +138,13 @@ describe('Schema 1 setter', function () {
         const data = {node: '5', spec: {def: '1', size: 'xyz'}};
         const expected = {node: '5', spec: {def: '1', size: 'xyz', abc: 'def'}};
         schemaSetter(schema1, ['spec', 'abc'], data, 'def');
+        assert.deepEqual(data, expected);
+    });
+
+    it('Should set value in a string map not exist', function () {
+        const data = {node: '5'};
+        const expected = {node: '5', spec: {size: 'abc'}};
+        schemaSetter(schema1, ['spec', 'size'], data, 'abc');
         assert.deepEqual(data, expected);
     });
 

@@ -5,7 +5,7 @@ function walkFieldCommon(obj, name, fieldType) {
         throw new Error('Path is too long');
     }
     if (obj[name] === undefined || obj[name] === null) {
-        if (fieldType.type === 'Object') {
+        if (fieldType.type === 'Object' || fieldType.type === 'StringMap') {
             obj[name] = {};
         } else {
             obj[name] = [];

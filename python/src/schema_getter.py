@@ -1,31 +1,27 @@
+import schema_dsl_common
+
+
 class NoneValue(Exception):
     pass
 
 
-def _find_field(schema_object, field_name):
-    for field in schema_object['fields']:
-        if field['name'] == field_name:
-            return field
-    return None
-
-
 def _get_object_field(schema_object, obj, name):
-    field = _find_field(schema_object, name)
+    field = schema_dsl_common.find_field(schema_object, name)
     if field is None:
         raise ValueError('Unrecognized field: ' + name)
     if name not in obj or obj[name] is None:
         raise NoneValue()
-    return [field['field_type'], obj[name]]
+    return field['field_type'], obj[name]
 
 
 def _get_array_field(schema_object, obj, index):
     if isinstance(index, bool) or not isinstance(index, (int, long)):
-        raise TypeError( 'Index should be integer')
-    return [schema_object['element_type'], obj[index]]
+        raise TypeError('Index should be integer')
+    return schema_object['element_type'], obj[index]
 
 
 def _get_string_map_field(schema_object, obj, name):
-    return [{'type': 'String'}, obj[name]]
+    return {'type': 'String'}, obj[name]
 
 
 def _get_basic_field(schema_object, obj, name):
