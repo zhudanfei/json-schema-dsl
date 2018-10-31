@@ -14,7 +14,8 @@ const schema1 = JsonObject(
         JsonField('name', JsonString),
         JsonField('level', JsonInteger)
     )),
-    JsonField('event', JsonArray(JsonObject(JsonField('name', JsonString),
+    JsonField('event', JsonArray(JsonObject(
+        JsonField('name', JsonString),
         JsonField('alarm', JsonBoolean)
     )))
 );
@@ -27,8 +28,8 @@ describe('Outgoing Schema 1', function(){
     });
 
     it('Should return array', function() {
-        const data = {'user': ['abc', 'def', 'xxxxxx']};
-        const expected = {user:['abc', 'def', 'xxxxxx']};
+        const data = {'user': ['abc', undefined, 'xxxxxx']};
+        const expected = {user:['abc', undefined, 'xxxxxx']};
         const actual = jsonOutgoing.convert(schema1, data);
         assert.deepEqual(actual, expected);
     });
@@ -51,8 +52,8 @@ describe('Outgoing Schema 1', function(){
     });
 
     it('Should return array of object', function() {
-        const data =  {event: [{name: 'abc'}, {alarm: false}]};
-        const expected = {event:[{name: 'abc'}, {alarm: false}]};
+        const data =  {event: [{name: 'abc'}, undefined, {alarm: false}]};
+        const expected = {event:[{name: 'abc'}, undefined, {alarm: false}]};
         const actual = jsonOutgoing.convert(schema1, data);
         assert.deepEqual(actual, expected);
     });

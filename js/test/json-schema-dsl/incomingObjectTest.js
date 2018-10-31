@@ -219,8 +219,8 @@ describe('Incoming Schema 7', function () {
 
 const schema8 = JsonObject(
     JsonField('credential', JsonEither(JsonObject(
-            JsonField('userId', JsonInteger),
-            JsonField('password', JsonString, MinLength(4))
+        JsonField('userId', JsonInteger),
+        JsonField('password', JsonString, MinLength(4))
         ), JsonString, JsonObject(
         JsonField('email', JsonString),
         JsonField('passphrase', JsonString, MinLength(5))
@@ -258,6 +258,39 @@ describe('Incoming Schema 8', function () {
     it('Should throw error if validation failed', function () {
         const data = {credential: {userId: 5, password: 'abc'}};
         assert.throws(() => jsonIncoming.convert(schema8, data), Error, "credential: Invalid value");
+    });
+
+});
+
+const schema9 = JsonEither(
+    JsonObject(
+        JsonField('userId', JsonInteger),
+        JsonField('password', JsonString, MinLength(4))
+    ),
+    JsonObject(
+        JsonField('email', JsonString),
+        JsonField('passphrase', JsonString, MinLength(5))
+    )
+);
+
+describe('Incoming Schema 8', function () {
+    it('Should accept object1', function () {
+        const data = {userId: 5, password: 'abcde'};
+        const expected = {userId: 5, password: 'abcde'};
+        const actual = jsonIncoming.convert(schema9, data);
+        assert.deepEqual(actual, expected);
+    });
+
+    it('Should accept object2', function () {
+        const data = {email: 'abc', passphrase: 'abcdef'};
+        const expected = {email: 'abc', passphrase: 'abcdef'};
+        const actual = jsonIncoming.convert(schema9, data);
+        assert.deepEqual(actual, expected);
+    });
+
+    it('Should throw error if input is invalid', function () {
+        const data = {userId: 5, passphrase: 'abcdef'};
+        assert.throws(() => jsonIncoming.convert(schema9, data), Error, "Invalid value");
     });
 
 });
