@@ -64,6 +64,50 @@ def _only(*options):
     return f
 
 
+def _minimum(low):
+    def f(value, path):
+        if value is None:
+            return None
+        if value < low:
+            raise ValueError(get_message(path, 'Value is too small'))
+        return value
+
+    return f
+
+
+def _exclusive_minimum(low):
+    def f(value, path):
+        if value is None:
+            return None
+        if value <= low:
+            raise ValueError(get_message(path, 'Value is too small'))
+        return value
+
+    return f
+
+
+def _maximum(high):
+    def f(value, path):
+        if value is None:
+            return None
+        if value > high:
+            raise ValueError(get_message(path, 'Value is too large'))
+        return value
+
+    return f
+
+
+def _exclusive_maximum(high):
+    def f(value, path):
+        if value is None:
+            return None
+        if value >= high:
+            raise ValueError(get_message(path, 'Value is too large'))
+        return value
+
+    return f
+
+
 def _range(low, high):
     def f(value, path):
         if value is None:
@@ -108,6 +152,22 @@ def LengthRange(low, high):
 
 def Only(*options):
     return SchemaFilter('validator', 'Only', _only(*options))
+
+
+def Minimum(low):
+    return SchemaFilter('validator', 'Minimum', _minimum(low))
+
+
+def ExclusiveMinimum(low):
+    return SchemaFilter('validator', 'ExclusiveMinimum', _exclusive_minimum(low))
+
+
+def Maximum(high):
+    return SchemaFilter('validator', 'Maximum', _maximum(high))
+
+
+def ExclusiveMaximum(high):
+    return SchemaFilter('validator', 'ExclusiveMaximum', _exclusive_maximum(high))
 
 
 def Range(low, high):

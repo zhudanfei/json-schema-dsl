@@ -69,6 +69,54 @@ function only(...options){
     }
 }
 
+function minimum(low){
+    return function (value, path){
+        if (value === undefined || value === null) {
+            return value;
+        }
+        if (value < low){
+            throw new Error(common.getMessage(path, 'Value is too small'));
+        }
+        return value;
+    }
+}
+
+function exclusiveMinimum(low){
+    return function (value, path){
+        if (value === undefined || value === null) {
+            return value;
+        }
+        if (value <= low){
+            throw new Error(common.getMessage(path, 'Value is too small'));
+        }
+        return value;
+    }
+}
+
+function maximum(high){
+    return function (value, path){
+        if (value === undefined || value === null) {
+            return value;
+        }
+        if (value > high){
+            throw new Error(common.getMessage(path, 'Value is too large'));
+        }
+        return value;
+    }
+}
+
+function exclusiveMaximum(high){
+    return function (value, path){
+        if (value === undefined || value === null) {
+            return value;
+        }
+        if (value >= high){
+            throw new Error(common.getMessage(path, 'Value is too large'));
+        }
+        return value;
+    }
+}
+
 function range(low, high){
     return function (value, path){
         if (value === undefined || value === null) {
@@ -113,6 +161,22 @@ function Only(...options){
     return {type: 'validator', name: 'Only', action: only(...options)};
 }
 
+function Minimum(low){
+    return {type: 'validator', name: 'Minimum', action: minimum(low)};
+}
+
+function ExclusiveMinimum(low){
+    return {type: 'validator', name: 'ExclusiveMinimum', action: exclusiveMinimum(low)};
+}
+
+function Maximum(high){
+    return {type: 'validator', name: 'Maximum', action: maximum(high)};
+}
+
+function ExclusiveMaximum(high){
+    return {type: 'validator', name: 'ExclusiveMaximum', action: exclusiveMaximum(high)};
+}
+
 function Range(low, high){
     return {type: 'validator', name: 'Range', action: range(low, high)};
 }
@@ -128,6 +192,10 @@ module.exports = {
     MinLength: MinLength,
     LengthRange: LengthRange,
     Only: Only,
+    Minimum: Minimum,
+    ExclusiveMinimum: ExclusiveMinimum,
+    Maximum: Maximum,
+    ExclusiveMaximum: ExclusiveMaximum,
     Range: Range,
     Pattern: Pattern
 };

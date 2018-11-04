@@ -142,6 +142,102 @@ describe('Only', function () {
 
 });
 
+describe('Minimum', function () {
+    it('Should return undefined if input is undefined', function(){
+        const actual = validators.Minimum(4).action(undefined, []);
+        assert.isUndefined(actual);
+    });
+
+    it('Should return null if input is undefined', function(){
+        const actual = validators.Minimum(4).action(null, []);
+        assert.isNull(actual);
+    });
+
+    it('Should return value if value is in range', function(){
+        const value = 4.5;
+        const actual = validators.Minimum(4).action(value);
+        assert.equal(actual, value);
+    });
+
+    it('Should throw error if value is too small', function(){
+        const value = 3.99;
+        assert.throws(() => validators.Minimum(4).action(value, ['node']), Error, "node: Value is too small");
+    });
+
+});
+
+describe('Exclusive Minimum', function () {
+    it('Should return undefined if input is undefined', function(){
+        const actual = validators.ExclusiveMinimum(4).action(undefined, []);
+        assert.isUndefined(actual);
+    });
+
+    it('Should return null if input is undefined', function(){
+        const actual = validators.ExclusiveMinimum(4).action(null, []);
+        assert.isNull(actual);
+    });
+
+    it('Should return value if value is in range', function(){
+        const value = 4.5;
+        const actual = validators.ExclusiveMinimum(4).action(value);
+        assert.equal(actual, value);
+    });
+
+    it('Should throw error if value is too small', function(){
+        const value = 4;
+        assert.throws(() => validators.ExclusiveMinimum(4).action(value, ['node']), Error, "node: Value is too small");
+    });
+
+});
+
+describe('Maximum', function () {
+    it('Should return undefined if input is undefined', function(){
+        const actual = validators.Maximum(5.3).action(undefined, []);
+        assert.isUndefined(actual);
+    });
+
+    it('Should return null if input is undefined', function(){
+        const actual = validators.Maximum(5.3).action(null, []);
+        assert.isNull(actual);
+    });
+
+    it('Should return value if value is in range', function(){
+        const value = 4.5;
+        const actual = validators.Maximum(5.3).action(value);
+        assert.equal(actual, value);
+    });
+
+    it('Should throw error if value is too big', function(){
+        const value = 5.301;
+        assert.throws(() => validators.Maximum(5.3).action(value, ['node']), Error, "node: Value is too large");
+    });
+
+});
+
+describe('Exclusive Maximum', function () {
+    it('Should return undefined if input is undefined', function(){
+        const actual = validators.ExclusiveMaximum(5.3).action(undefined, []);
+        assert.isUndefined(actual);
+    });
+
+    it('Should return null if input is undefined', function(){
+        const actual = validators.ExclusiveMaximum(5.3).action(null, []);
+        assert.isNull(actual);
+    });
+
+    it('Should return value if value is in range', function(){
+        const value = 4.5;
+        const actual = validators.ExclusiveMaximum(5.3).action(value);
+        assert.equal(actual, value);
+    });
+
+    it('Should throw error if value is too big', function(){
+        const value = 5.3;
+        assert.throws(() => validators.ExclusiveMaximum(5.3).action(value, ['node']), Error, "node: Value is too large");
+    });
+
+});
+
 describe('Range', function () {
     it('Should return undefined if input is undefined', function(){
         const actual = validators.Range(4, 5.3).action(undefined, []);
@@ -159,12 +255,12 @@ describe('Range', function () {
         assert.equal(actual, value);
     });
 
-    it('Should throw error if length is too big', function(){
+    it('Should throw error if value is too big', function(){
         const value = 6.1;
         assert.throws(() => validators.Range(4, 5.3).action(value, ['node']), Error, "node: Value is too large");
     });
 
-    it('Should throw error if length is too small', function(){
+    it('Should throw error if value is too small', function(){
         const value = 3;
         assert.throws(() => validators.Range(4, 5.3).action(value, ['node']), Error, "node: Value is too small");
     });

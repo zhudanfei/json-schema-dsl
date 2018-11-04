@@ -129,6 +129,86 @@ class TestOnly(unittest.TestCase):
             self.assertEqual('root: Invalid value', ex.message)
 
 
+class TestMinimum(unittest.TestCase):
+
+    def test_none(self):
+        actual = validators.Minimum(4)(None, [])
+        self.assertIsNone(actual)
+
+    def test_in_range(self):
+        value = 4.5
+        actual = validators.Minimum(4)(value, [])
+        self.assertEqual(value, actual)
+
+    def test_too_small(self):
+        value = 3.99
+        try:
+            validators.Minimum(4)(value, ['node'])
+            self.assertTrue(False)
+        except ValueError as ex:
+            self.assertEqual('node: Value is too small', ex.message)
+
+
+class TestExclusiveMinimum(unittest.TestCase):
+
+    def test_none(self):
+        actual = validators.ExclusiveMinimum(4)(None, [])
+        self.assertIsNone(actual)
+
+    def test_in_range(self):
+        value = 4.5
+        actual = validators.ExclusiveMinimum(4)(value, [])
+        self.assertEqual(value, actual)
+
+    def test_too_small(self):
+        value = 4
+        try:
+            validators.ExclusiveMinimum(4)(value, ['node'])
+            self.assertTrue(False)
+        except ValueError as ex:
+            self.assertEqual('node: Value is too small', ex.message)
+
+
+class TestMaximum(unittest.TestCase):
+
+    def test_none(self):
+        actual = validators.Maximum(5.3)(None, [])
+        self.assertIsNone(actual)
+
+    def test_in_range(self):
+        value = 4.5
+        actual = validators.Maximum(5.3)(value, [])
+        self.assertEqual(value, actual)
+
+    def test_too_big(self):
+        value = 5.301
+        try:
+            validators.Maximum(5.3)(value, ['node'])
+            self.assertTrue(False)
+        except ValueError as ex:
+            self.assertEqual('node: Value is too large', ex.message)
+
+
+class TestExclusiveMaximum(unittest.TestCase):
+
+    def test_none(self):
+        actual = validators.ExclusiveMaximum(5.3)(None, [])
+        self.assertIsNone(actual)
+
+    def test_in_range(self):
+        value = 4.5
+        actual = validators.ExclusiveMaximum(5.3)(value, [])
+        self.assertEqual(value, actual)
+
+    def test_too_big(self):
+        value = 5.3
+        try:
+            validators.ExclusiveMaximum(5.3)(value, ['node'])
+            self.assertTrue(False)
+        except ValueError as ex:
+            self.assertEqual('node: Value is too large', ex.message)
+
+
 class TestRange(unittest.TestCase):
 
     def test_none(self):
