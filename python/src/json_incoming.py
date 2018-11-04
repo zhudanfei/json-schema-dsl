@@ -114,4 +114,5 @@ TYPE_FUNCTION_MAP = {
 
 
 def convert(schema, input_object, path=None):
+    path = path or []
     return TYPE_FUNCTION_MAP[schema['type']](schema, input_object, path)

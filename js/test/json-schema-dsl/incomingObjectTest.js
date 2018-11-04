@@ -273,7 +273,7 @@ const schema9 = JsonEither(
     )
 );
 
-describe('Incoming Schema 8', function () {
+describe('Incoming Schema 9', function () {
     it('Should accept object1', function () {
         const data = {userId: 5, password: 'abcde'};
         const expected = {userId: 5, password: 'abcde'};

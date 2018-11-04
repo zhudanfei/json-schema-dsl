@@ -30,8 +30,8 @@ class TestSchema1(unittest.TestCase):
             self.assertEqual('node: Should be a string', ex.message)
 
     def test_return_array(self):
-        data = {'user': ['abc', 'def', 'xxxxxx']}
-        expected = {'user': ['abc', 'def', 'xxxxxx']}
+        data = {'user': ['abc', None, 'xxxxxx']}
+        expected = {'user': ['abc', None, 'xxxxxx']}
         result = json_outgoing.convert(schema1, data)
         self.assertEqual(expected, result)
 
@@ -58,8 +58,8 @@ class TestSchema1(unittest.TestCase):
         self.assertEqual(expected, result)
 
     def test_return_array_of_object(self):
-        data = {'event': [{'name': 'abc'}, {'alarm': False}]}
-        expected = {'event': [{'name': 'abc'}, {'alarm': False}]}
+        data = {'event': [{'name': 'abc'}, None, {'alarm': False}]}
+        expected = {'event': [{'name': 'abc'}, None, {'alarm': False}]}
         result = json_outgoing.convert(schema1, data)
         self.assertEqual(expected, result)
 

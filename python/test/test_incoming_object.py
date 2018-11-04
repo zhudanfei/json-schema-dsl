@@ -293,5 +293,37 @@ class TestSchema8(unittest.TestCase):
             self.assertEqual('credential: Invalid value', ex.message)
 
 
+schema9 = JsonEither(
+    JsonObject(
+        JsonField('userId', JsonInteger),
+        JsonField('password', JsonString, MinLength(4))
+    ),
+    JsonObject(
+        JsonField('email', JsonString),
+        JsonField('passphrase', JsonString, MinLength(5))
+    )
+)
+
+
+class TestSchema9(unittest.TestCase):
+    def test_object1(self):
+        data = {'userId': 5, 'password': 'abcde'}
+        result = json_incoming.convert(schema9, data)
+        self.assertEqual(data, result)
+
+    def test_object2(self):
+        data = {'email': 'abc', 'passphrase': 'abcdef'}
+        result = json_incoming.convert(schema9, data)
+        self.assertEqual(data, result)
+
+    def test_invalid(self):
+        data = {'userId': 5, 'passphrase': 'abcdef'}
+        try:
+            json_incoming.convert(schema9, data)
+            self.assertTrue(False)
+        except ValueError as ex:
+            self.assertEqual('Invalid value', ex.message)
+
+
 if __name__ == '__main__':
     unittest.main()
